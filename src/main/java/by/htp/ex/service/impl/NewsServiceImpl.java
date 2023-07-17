@@ -3,6 +3,7 @@ package by.htp.ex.service.impl;
 import java.util.List;
 
 import by.htp.ex.bean.News;
+import by.htp.ex.dao.DaoException;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.dao.NewsDAOException;
@@ -36,7 +37,7 @@ public class NewsServiceImpl implements INewsService{
 		
 		try {
 			return newsDAO.getLatestsList(5);
-		} catch (NewsDAOException e) {
+		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
 	}
@@ -44,8 +45,8 @@ public class NewsServiceImpl implements INewsService{
 	@Override
 	public List<News> list() throws ServiceException {
 		try {
-			return newsDAO.getList();
-		} catch (NewsDAOException e) {
+			return newsDAO.getLatestsList(5);
+		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
 	}
@@ -54,7 +55,7 @@ public class NewsServiceImpl implements INewsService{
 	public News findById(int id) throws ServiceException {
 		try {
 			return newsDAO.fetchById(id);
-		} catch (NewsDAOException e) {
+		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
 	}

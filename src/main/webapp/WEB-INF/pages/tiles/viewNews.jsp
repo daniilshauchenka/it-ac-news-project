@@ -35,9 +35,9 @@
 		<tr>
 			<td class="space_around_title_text">Image</td>
 			<td class="space_around_view_text"><div class="word-breaker">
-
-					<img src="<c:out value="${requestScope.news.imagePath }" />" width="90%" alt="image" >
-				</div></td>
+<c:if test="${not requestScope.news.imagePath eq ''}">	<img src="<c:out value="${requestScope.news.imagePath }" />" width="90%" alt="image" >
+		</c:if>
+						</div></td>
 		</tr>
 	</table>
 </div>
