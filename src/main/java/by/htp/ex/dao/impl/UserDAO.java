@@ -56,7 +56,7 @@ public class UserDAO implements IUserDAO {
 			}
 
 			User user = getUserFromResultSet(resultSet);
-			//ln(user.toString());
+			System.out.println(user.toString());
 			// user.setLocale(null);
 			return user;
 		} catch (SQLException e) {

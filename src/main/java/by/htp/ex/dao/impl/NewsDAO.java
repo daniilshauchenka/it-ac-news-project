@@ -28,7 +28,7 @@ public class NewsDAO implements INewsDAO {
 			preparedStatement.setInt(1, count);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()){
-				result.add(getNewsFromResultSet(resultSet));
+				result.add(getFullNewsFromResultSet(resultSet));
 			}
 		
 		}catch (SQLException | ConnectionPoolException e){
@@ -85,16 +85,28 @@ public class NewsDAO implements INewsDAO {
 	}
 	
 	
-	private News getNewsFromResultSet(ResultSet resultSet) throws SQLException {
+	private News getFullNewsFromResultSet(ResultSet resultSet) throws SQLException {
 		News news = new News();
 		news.setIdNews(resultSet.getInt("id"));
 		news.setBriefNews(resultSet.getString("brief"));
 		news.setContent(resultSet.getString("content"));
 		news.setNewsDate(resultSet.getDate("date_created").toString());
 		news.setTitle(resultSet.getString("title"));
-		
+		news.setImagePath(resultSet.getString("image_path"));
+		System.out.println(news);
 		return news;
 	}
+	
+	private News getBriefNewsFromResultSet(ResultSet resultSet) throws SQLException {
+		News news = new News();
+		news.setIdNews(resultSet.getInt("id"));
+		news.setBriefNews(resultSet.getString("brief"));
+		news.setNewsDate(resultSet.getDate("date_created").toString());
+		news.setTitle(resultSet.getString("title"));
+			System.out.println(news);
+		return news;
+	}
+	
 	
 	private final static String SQL_GETTING_NEWS = "SELECT * FROM news WHERE id = ?";
 
@@ -107,7 +119,7 @@ public class NewsDAO implements INewsDAO {
 				ResultSet resultSet = statement.executeQuery();
 
 				if (resultSet.next()) {
-					news = getNewsFromResultSet(resultSet);
+					news = getFullNewsFromResultSet(resultSet);
 				}
 			}
 			catch (SQLException |ConnectionPoolException e){
@@ -120,7 +132,7 @@ public class NewsDAO implements INewsDAO {
 
 	@Override
 	public int addNews(News news) throws DaoException {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 

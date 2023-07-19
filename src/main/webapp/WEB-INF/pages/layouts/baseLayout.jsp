@@ -26,7 +26,7 @@
 			<div class="menu">
 
 				<c:if test="${not (sessionScope.user eq 'active')}">
-				    Welcome, ${sessionScope.userInfo}!!!!!
+				    Welcome!!!!!
 					<%-- <c:import url=""></c:import> --%>
 				</c:if>
 				<c:if test="${sessionScope.user eq 'active'}">

@@ -8,7 +8,7 @@ import by.htp.ex.controller.impl.DoRegistration;
 import by.htp.ex.controller.impl.DoSignOut;
 import by.htp.ex.controller.impl.GoToBasePage;
 import by.htp.ex.controller.impl.GoToNewsList;
-import by.htp.ex.controller.impl.GoToRegistrationPageCommand;
+import by.htp.ex.controller.impl.GoToRegistrationPage;
 import by.htp.ex.controller.impl.GoToViewNews;
 
 public class CommandProvider {
@@ -16,7 +16,7 @@ public class CommandProvider {
 	
 	public CommandProvider() {
 		commands.put(CommandName.GO_TO_BASE_PAGE, new GoToBasePage());
-		commands.put(CommandName.GO_TO_REGISTRATION_PAGE, new GoToRegistrationPageCommand());
+		commands.put(CommandName.GO_TO_REGISTRATION_PAGE, new GoToRegistrationPage());
 		commands.put(CommandName.DO_AUTHORIZATION, new DoAuthorization());
 		commands.put(CommandName.DO_REGISTRATION, new DoRegistration());
 		commands.put(CommandName.DO_SIGN_OUT, new DoSignOut());

@@ -24,7 +24,8 @@ public class GoToBasePage implements Command{
 			latestNews = newsService.latestList(5);
 			request.setAttribute("news", latestNews);
 			//request.setAttribute("news", null);
-
+			request.setAttribute("user", request.getSession(true).getAttribute("user"));
+			request.setAttribute("presentation", "viewNews");
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		} catch (ServiceException e) {
 			// loggin - error

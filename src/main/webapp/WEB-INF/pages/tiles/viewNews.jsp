@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="body-title">
-	<a href="">News >> </a> View News
+	<a href="controller?command=go_to_base_page">News >> </a> View News
 </div>
 
 <div class="add-table-margin">
@@ -35,8 +35,9 @@
 		<tr>
 			<td class="space_around_title_text">Image</td>
 			<td class="space_around_view_text"><div class="word-breaker">
-<c:if test="${not requestScope.news.imagePath eq ''}">	<img src="<c:out value="${requestScope.news.imagePath }" />" width="90%" alt="image" >
-		</c:if>
+			<p>${requestScope.news.imagePath }</p>
+			<img src="${requestScope.news.imagePath}" width="60%" alt = "image">
+			
 						</div></td>
 		</tr>
 	</table>
