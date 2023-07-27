@@ -6,16 +6,30 @@ public class News implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id;
+	private int id;
 	private String title;
 	private String briefNews;
 	private String content;
 	private String newsDate;
 	private String imagePath;
+	private int userId;
 	
+	public News() {
+		super();
+	}
 	
+	public News( String title, String briefNews, String content, String newsDate, String imagePath, int userId) {
+		super();
 	
-	public News(){}
+		this.title = title;
+		this.briefNews = briefNews;
+		this.content = content;
+		this.newsDate = newsDate;
+		this.imagePath = imagePath;
+		this.userId = userId;
+	}
+	
+
 
 	public News(int idNews, String title, String briefNews, String content, String newsDate,String imagePath) {
 		super();
@@ -75,11 +89,17 @@ public class News implements Serializable {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
+	public int getUserId() {
+		return userId;
+	}
 
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	@Override
 	public String toString() {
 		return "News [id=" + id + ", title=" + title + ", briefNews=" + briefNews 
-				+ ", newsDate=" + newsDate + ", imagePath=" + imagePath + "]";
+				+ ", newsDate=" + newsDate + ", imagePath=" + imagePath + "userId = " + userId+"]";
 	}	
 	
 

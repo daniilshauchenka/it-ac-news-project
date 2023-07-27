@@ -13,7 +13,7 @@
 			<a	href=""> ru </a> <br /> <br />
 		</div>
 
-		<c:if test="${not (sessionScope.userStatus eq 'active')}">
+		<c:if test="${not (sessionScope.userStatus eq 'active') and not (requestScope.presentation eq 'registration')}">
 
 			<div align="right">
 				<form action="controller" method="post">

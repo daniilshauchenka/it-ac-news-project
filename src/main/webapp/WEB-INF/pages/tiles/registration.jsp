@@ -10,6 +10,7 @@
 
 </head>
 <body>
+	<a href="controller?command=go_to_base_page"> << Back </a> 
 	<form action="controller" method="post">
 	<c:out value="${sessionScope.errorMessage}"/>
 		<input type="hidden" name="command" value="do_registration" />

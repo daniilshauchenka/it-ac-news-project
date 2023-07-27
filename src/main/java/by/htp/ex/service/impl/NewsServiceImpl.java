@@ -14,29 +14,13 @@ public class NewsServiceImpl implements INewsService{
 
 	private final INewsDAO newsDAO = DaoProvider.getInstance().getNewsDAO();
 	
-	@Override
-	public void save() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void find() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public List<News> latestList(int count) throws ServiceException {
 		
 		try {
-			return newsDAO.getLatestsList(5);
+			return newsDAO.getLatestList(5);
 		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
@@ -45,7 +29,7 @@ public class NewsServiceImpl implements INewsService{
 	@Override
 	public List<News> list() throws ServiceException {
 		try {
-			return newsDAO.getLatestsList(5);
+			return newsDAO.getLatestList(5);
 		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
@@ -58,6 +42,29 @@ public class NewsServiceImpl implements INewsService{
 		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
+	}
+
+	@Override
+	public void add(News news) throws ServiceException {
+		try {
+			System.out.println("add");
+			newsDAO.addNews(news);
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(int id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

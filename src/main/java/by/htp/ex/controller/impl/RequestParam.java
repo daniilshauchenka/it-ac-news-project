@@ -22,7 +22,7 @@ public class RequestParam {
 	final static String USER_PROFILE = "userProfile";
 	final static String VIEW_NEWS= "viewNews";
 	final static String NEWS_LIST = "newsList";
-
+	final static String ADD_NEWS = "addNews";
 	
 	final static String JSP_COMMAND_PARAM_NAME = "command";
 	final static String JSP_ACTION_PARAM_NAME = "action";
@@ -33,6 +33,9 @@ public class RequestParam {
 	final static String VIEW_ACTION = "view";
 	
 	
-
+	final static String JSP_NEWS_TITLE_PARAM_NAME = "title";
+	final static String JSP_NEWS_BRIEF_PARAM_NAME = "brief";
+	final static String JSP_NEWS_CONTENT_PARAM_NAME = "content";
+	final static String JSP_NEWS_IMAGE_PATH_PARAM_NAME = "imagePath";
 	
 }

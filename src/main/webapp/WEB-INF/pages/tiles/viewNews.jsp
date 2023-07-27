@@ -54,7 +54,7 @@
 		<tr>
 			<td class="space_around_title_text">Image</td>
 			<td class="space_around_view_text"><div class="word-breaker">
-			<p>${requestScope.news.imagePath }</p>
+			
 			<img src="${requestScope.news.imagePath}" width="60%" alt = "image">
 			
 						</div></td>

@@ -24,14 +24,10 @@ public class DoUpdateUser implements Command {
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Enumeration<String> attributes = request.getSession().getAttributeNames();
-		while (attributes.hasMoreElements()) {
-		    String attribute = (String) attributes.nextElement();
-		    System.out.println("addtibuteName " + attribute+" : "+request.getSession().getAttribute(attribute));
-		}
+	
 		User user = (User)request.getSession().getAttribute("userInfo");
 		
-		
+		System.out.println("upd user" + user);
 		
 		
 //	

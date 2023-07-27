@@ -3,10 +3,12 @@ package by.htp.ex.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import by.htp.ex.controller.impl.DoAddNews;
 import by.htp.ex.controller.impl.DoAuthorization;
 import by.htp.ex.controller.impl.DoRegistration;
 import by.htp.ex.controller.impl.DoSignOut;
 import by.htp.ex.controller.impl.DoUpdateUser;
+import by.htp.ex.controller.impl.GoToAddNews;
 import by.htp.ex.controller.impl.GoToBasePage;
 import by.htp.ex.controller.impl.GoToEditUserProfile;
 import by.htp.ex.controller.impl.GoToNewsList;
@@ -29,6 +31,9 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_USER_PROFILE, new GoToUserProfile());
 		commands.put(CommandName.GO_TO_EDIT_USER_PROFILE, new GoToEditUserProfile());
 		commands.put(CommandName.DO_UPDATE_USER, new DoUpdateUser());
+		commands.put(CommandName.GO_TO_ADD_NEWS, new GoToAddNews());
+		commands.put(CommandName.DO_ADD_NEWS, new DoAddNews());
+		
 
 		
 	}

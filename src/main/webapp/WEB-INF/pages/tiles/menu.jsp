@@ -24,12 +24,12 @@
 				<c:if test="${sessionScope.role eq 'ADMIN'}">
 				<p>Admin functions</p>
 					<li style="padding-left: 15px;">
-						<a href="">add news </a>
+						<a href="controller?command=go_to_add_news">add news </a>
 						
 					</li>
 					<li style="padding-left: 15px;">
 						
-						<a href="">users list</a> <br />
+						<a href="controller?command=go_to_users_list">users list</a> <br />
 					</li>
 				</c:if>
 	

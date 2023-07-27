@@ -106,69 +106,29 @@ public class UserDAO implements IUserDAO {
 		try {
 			connection = connectionPool.takeConnection();
 			connection.setAutoCommit(false);
-			//ln("conneciton taken");
 			if (userExists(user, connection)) {
-				//ln("User exists!");
 				throw new DaoException("User exists!!!");
-				
-				// locale
-			}
-			//ln("continue registration");
 
-	
-			
-			//ln("continue registration 1");
+			}
 
 			preparedStatementAddingUser = connection.prepareStatement(SQL_ADDING_USER, Statement.RETURN_GENERATED_KEYS);
-			// preparedStatementAddingLocale = connection.prepareStatement(SQL_ADD_LOCALE);
-			preparedStatementAddingUserInfo = connection.prepareStatement(SQL_ADDING_USER_INFO);
-			//ln("continue registration 2");
-
 			preparedStatementAddingUser.setString(1, user.getLogin());
-			//ln("continue registration 3");
 			preparedStatementAddingUser.setString(2, user.getPassword());
-			//ln(user.getPassword());
 			preparedStatementAddingUser.setString(3, user.getEmail());
-			//ln("continue registration 5");
 			preparedStatementAddingUser.executeUpdate();
 			user.setPassword(null);
-			//ln("execute");
-
 			ResultSet resultSet = preparedStatementAddingUser.getGeneratedKeys();
-			//ln("got result set");
-
 			resultSet.next();
-
-			
 			int userId = resultSet.getInt(1);
-
-			//ln("userid " + userId);
-
 			connection.commit();
-
 			user.setId(userId);
-
 			preparedStatementAddingUserRole = connection.prepareStatement(SQL_ADDING_USER_ROLE);
-			// preparedStatementAddingLocale = connection.prepareStatement(SQL_ADD_LOCALE);
-			// preparedStatementAddingUserInfo =
-			// connection.prepareStatement(String.format(SQL_ADDING_USER_INFO_BY_LOCALE,
-			// table));
-			//ln("adding role");
-
 			preparedStatementAddingUserRole.setInt(1, user.getId());
 			preparedStatementAddingUserRole.setString(2, USER_DEFAULT_ROLE);
-
 			preparedStatementAddingUserRole.executeUpdate();
 			user.setRole(Role.valueOf(USER_DEFAULT_ROLE));
-			//ln("done");
 
 			preparedStatementAddingUserInfo = connection.prepareStatement(SQL_ADDING_USER_INFO);
-			// preparedStatementAddingLocale = connection.prepareStatement(SQL_ADD_LOCALE);
-			// preparedStatementAddingUserInfo =
-			// connection.prepareStatement(String.format(SQL_ADDING_USER_INFO_BY_LOCALE,
-			// table));
-			//ln("adding info");
-
 			preparedStatementAddingUserInfo.setInt(1, user.getId());
 			preparedStatementAddingUserInfo.setString(2, user.getName());
 			preparedStatementAddingUserInfo.setString(3, user.getSurname());
@@ -178,8 +138,7 @@ public class UserDAO implements IUserDAO {
 			connection.setAutoCommit(true);
 			return true;
 		} catch (ConnectionPoolException | SQLException |DaoException e) {
-			e.printStackTrace();
-			//ln("\n\n\n");
+
 			if (connection != null) {
 				try {
 					connection.rollback();
