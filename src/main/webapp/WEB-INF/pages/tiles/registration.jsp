@@ -7,6 +7,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="styles/style.css">
+
 </head>
 <body>
 	<form action="controller" method="post">
@@ -37,18 +38,11 @@
 				id="password-repeat" required>
 			<hr>
 
-			<p>
-				By creating an account you agree to our <a href="#">Terms &
-					Privacy</a>.
-			</p>
+		
 			<button type="submit" class="registerbtn">Register</button>
 		</div>
 
-		<div class="container signin">
-			<p>
-				Already have an account? <a href="#">Sign in</a>.
-			</p>
-		</div>
+		
 	</form>
 </body>
 </html>

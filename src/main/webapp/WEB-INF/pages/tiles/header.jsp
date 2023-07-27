@@ -1,8 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="wrapper">
-	<div class="newstitle">News management</div>
-
+	<a class="newstitle" href="controller?command=go_to_news_list">News management</a>
+	
+	
 
 	<div class="local-link">
 
@@ -12,7 +13,7 @@
 			<a	href=""> ru </a> <br /> <br />
 		</div>
 
-		<c:if test="${not (sessionScope.user eq 'active')}">
+		<c:if test="${not (sessionScope.userStatus eq 'active')}">
 
 			<div align="right">
 				<form action="controller" method="post">
@@ -33,7 +34,7 @@
 
 		</c:if>
 		
-		<c:if test="${sessionScope.user eq 'active'}">
+		<c:if test="${sessionScope.userStatus eq 'active'}">
 		
 			<div align="right">
 			 <c:out value="You are online, ${userInfo.name}" />

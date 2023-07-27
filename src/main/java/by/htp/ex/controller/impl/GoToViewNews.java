@@ -26,9 +26,9 @@ public class GoToViewNews implements Command {
 		
 		try {
 			news  = newsService.findById(Integer.parseInt(id));
-			request.setAttribute("news", news);
-			request.setAttribute("presentation", "viewNews");
-			request.setAttribute("user", request.getSession(true).getAttribute("user"));
+			request.setAttribute(RequestParam.JSP_SINGLE_NEWS_PARAM_NAME, news);
+			request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.VIEW_NEWS);
+			request.setAttribute(RequestParam.JSP_USER_INFO_PARAM_NAME, request.getSession(true).getAttribute(RequestParam.JSP_USER_INFO_PARAM_NAME));
 			
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		} catch (ServiceException e) {

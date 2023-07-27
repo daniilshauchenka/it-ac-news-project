@@ -46,5 +46,15 @@ public class UserServiceImpl implements IUserService {
 		throw new ServiceException(e.getMessage());
 	}
 	}
+	@Override
+	public User getUserById(int id) {
+		return null;
+	}
+
+	@Override
+	public User getCurrentUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -25,24 +25,22 @@
 		<div class="base-layout-wrapper">
 			<div class="menu">
 
-				<c:if test="${not (sessionScope.user eq 'active')}">
+				<c:if test="${not (sessionScope.userStatus eq 'active')}">
 				    Welcome!!!!!
 					<%-- <c:import url=""></c:import> --%>
 				</c:if>
-				<c:if test="${sessionScope.user eq 'active'}">
+				<c:if test="${sessionScope.userStatus eq 'active'}">
 					<c:import url="/WEB-INF/pages/tiles/menu.jsp" />
 				</c:if>
 		</div>
 
 		<div class="content">
 
-				<c:if test="${not (sessionScope.user eq 'active')}">
-					<c:import url="/WEB-INF/pages/tiles/guestInfo.jsp" />
-				</c:if>
-				<c:if test="${sessionScope.user eq 'active'}">
-					<c:import url="/WEB-INF/pages/tiles/body.jsp" />
-				</c:if>
-
+		
+				
+				
+				<c:import url="/WEB-INF/pages/tiles/body.jsp" />
+		
 
 			</div>
 		</div>

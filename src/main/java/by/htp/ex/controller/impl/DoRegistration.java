@@ -43,7 +43,7 @@ public class DoRegistration implements Command {
 				//ln("REGISTERED");
 				String role = newUser.getRoleName();
 				//ln(role);
-				request.getSession(true).setAttribute(RequestParam.JSP_USER_PARAM_NAME, RequestParam.USER_STATUS_ACTIVE);
+				request.getSession(true).setAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME, RequestParam.USER_STATUS_ACTIVE);
 				request.getSession().setAttribute(RequestParam.JSP_USER_ROLE_PARAM_NAME, role);
 				request.getSession().setAttribute(RequestParam.JSP_USER_INFO_PARAM_NAME, newUser);
 			

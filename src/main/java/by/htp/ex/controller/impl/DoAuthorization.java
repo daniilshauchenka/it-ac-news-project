@@ -40,7 +40,7 @@ public class DoAuthorization implements Command {
 			user = service.authorization(login, password);
 			
 			String role = user.getRoleName();
-			request.getSession(true).setAttribute(RequestParam.JSP_USER_PARAM_NAME, RequestParam.USER_STATUS_ACTIVE);
+			request.getSession(true).setAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME, RequestParam.USER_STATUS_ACTIVE);
 			request.getSession().setAttribute(RequestParam.JSP_USER_ROLE_PARAM_NAME, role);
 			request.getSession().setAttribute(RequestParam.JSP_USER_INFO_PARAM_NAME, user);
 		//	request.getSession().setAttribute(JSP_LOCALIZATION_PARAM, user.getLocale());

@@ -6,9 +6,12 @@ import java.util.Map;
 import by.htp.ex.controller.impl.DoAuthorization;
 import by.htp.ex.controller.impl.DoRegistration;
 import by.htp.ex.controller.impl.DoSignOut;
+import by.htp.ex.controller.impl.DoUpdateUser;
 import by.htp.ex.controller.impl.GoToBasePage;
+import by.htp.ex.controller.impl.GoToEditUserProfile;
 import by.htp.ex.controller.impl.GoToNewsList;
 import by.htp.ex.controller.impl.GoToRegistrationPage;
+import by.htp.ex.controller.impl.GoToUserProfile;
 import by.htp.ex.controller.impl.GoToViewNews;
 
 public class CommandProvider {
@@ -23,6 +26,11 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_NEWS_LIST, new GoToNewsList());
 		commands.put(CommandName.GO_TO_VIEW_NEWS, new GoToViewNews());
 		commands.put(CommandName.UNDEFINED, new GoToBasePage());
+		commands.put(CommandName.GO_TO_USER_PROFILE, new GoToUserProfile());
+		commands.put(CommandName.GO_TO_EDIT_USER_PROFILE, new GoToEditUserProfile());
+		commands.put(CommandName.DO_UPDATE_USER, new DoUpdateUser());
+
+		
 	}
 	
 	

@@ -36,21 +36,21 @@ public class UserDAO implements IUserDAO {
 	public User authorization(String login, String password) throws DaoException {
 		try (Connection connection = connectionPool.takeConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_AUTH_USER)) {
-			//ln(SQL_TO_AUTH_USER);
+		
 			preparedStatement.setString(1, login);
-			//ln("exectuting query");
+		
 			ResultSet resultSet = null;
 			try {
 				resultSet = preparedStatement.executeQuery();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
-			//ln("got result set");
+			
 			if (!resultSet.next()) {
-				//ln("user not found");
-				throw new DaoException("User not found with this login");
+	
+				throw new DaoException("User doesn't exist");
 			}
-			//ln("user found");
+
 			if (!validator.isCorrectPassword(password, resultSet.getString("password"))) {
 				throw new DaoException("Incorrect password!");
 			}
@@ -68,20 +68,24 @@ public class UserDAO implements IUserDAO {
 
 	public User getUserFromResultSet(ResultSet resultSet) throws DaoException, SQLException {
 		User user = new User();
-		//ln("getting user from resultSet");
-
+	
 		user.setId(resultSet.getInt("id"));
 		user.setLogin(resultSet.getString("login"));
 		user.setEmail(resultSet.getString("email"));
 		user.setName(resultSet.getString("name"));
 		user.setSurname(resultSet.getString("surname"));
-		user.setPassword(resultSet.getString("password"));
+	//	user.setPassword(resultSet.getString("password"));
 		String role = resultSet.getString("role");
 		user.setRole(Role.valueOf(role.toUpperCase()));
 		if (user.getRole() == null) {
 			throw new DaoException("Users role not found!");
 		}
 		return user;
+	}
+	
+	public User getUserCredentials(User user) {
+		return user;
+		
 	}
 
 	private final static String SQL_ADDING_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";

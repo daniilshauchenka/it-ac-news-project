@@ -12,9 +12,11 @@ public class GoToRegistrationPage implements Command {
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.REGISTRATION);
+		
 		request.setAttribute(RequestParam.JSP_ACTION_PARAM_NAME, RequestParam.REGISTRATION);
 		request.setAttribute(RequestParam.JSP_LOCALE_PARAM_NAME, Locale.getDefault());
-		request.getRequestDispatcher("/WEB-INF/pages/tiles/registration.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 
 	}
 

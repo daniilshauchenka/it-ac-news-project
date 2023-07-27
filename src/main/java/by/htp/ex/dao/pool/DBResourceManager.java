@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public final class DBResourceManager {
 	private final static DBResourceManager instance = new DBResourceManager();
-	private static Properties properties;
+	private  Properties properties;
 
 	private DBResourceManager() {
 		properties = new Properties();

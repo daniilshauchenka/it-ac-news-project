@@ -38,7 +38,7 @@ public final class ConnectionPool {
 	}
 
 	public void initConnectionPool() throws ConnectionPoolException {
-System.out.println("init pool");
+
 		try {
 			Class.forName(driver);
 			queueAvailableConnection = new ArrayBlockingQueue<>(poolSize);
@@ -46,7 +46,6 @@ System.out.println("init pool");
 
 			for (int i = 0; i < poolSize; i++) {
 				Connection connection = DriverManager.getConnection(url, user, password);
-				System.out.println(i+". "+url+" " + user+ " " + password);
 				PooledConnection pooledConnection = new PooledConnection(connection);
 				queueAvailableConnection.add(pooledConnection);
 			}

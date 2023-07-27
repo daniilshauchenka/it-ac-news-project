@@ -6,11 +6,11 @@
 </div>
 
 <form action="" method="post">
-	<c:forEach var="news" items="${requestScope.news}">
+	<c:forEach var="news" items="${requestScope.newsList}">
 		<div class="single-news-wrapper">
 			<div class="single-news-header-wrapper">
 				<div class="news-title">
-					<a href="controller?command=go_to_view_news&id=${news.idNews}"> 			<c:out value="${news.title}" /></a> 
+					<a href="controller?command=go_to_view_news&id=${news.idNews}"><c:out value="${news.title}" /></a> 
    				
 		
 				</div>
@@ -51,7 +51,7 @@
 	</logic:notEmpty> -->
 
 	<div class="no-news">
-		<c:if test="${requestScope.news eq null}">
+		<c:if test="${requestScope.newsList eq null}">
         No news.
 	</c:if>
 	</div>

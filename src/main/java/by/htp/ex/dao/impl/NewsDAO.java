@@ -93,7 +93,7 @@ public class NewsDAO implements INewsDAO {
 		news.setNewsDate(resultSet.getDate("date_created").toString());
 		news.setTitle(resultSet.getString("title"));
 		news.setImagePath(resultSet.getString("image_path"));
-		System.out.println(news);
+	
 		return news;
 	}
 	
@@ -144,7 +144,7 @@ public class NewsDAO implements INewsDAO {
 
 
 	@Override
-	public void deleteNewses(String[] idNewses) throws DaoException {
+	public void deleteNews(String[] idNews) throws DaoException {
 		// TODO Auto-generated method stub
 
 	}

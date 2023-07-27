@@ -21,9 +21,9 @@ public class GoToNewsList implements Command {
 		List<News> newsList;
 		try {
 			newsList = newsService.list();
-			request.setAttribute("news", newsList);
-			request.setAttribute("presentation", "newsList");
-			request.setAttribute("user", request.getSession(true).getAttribute("user"));
+			request.setAttribute(RequestParam.JSP_NEWS_LIST_PARAM_NAME, newsList);
+			request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.NEWS_LIST);
+			request.setAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME, request.getSession(true).getAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME));
 		
 
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);

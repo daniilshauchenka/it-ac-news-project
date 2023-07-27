@@ -10,15 +10,15 @@
 		<div class="list-menu-wrapper" style="float: right;">
 			<ul style="list-style-image: url(images/img.jpg); text-align: left;">
 				<li style="padding-left: 15px;">
-				<a href="">Latest news</a><br />
+				<a href="controller?command=go_to_news_list">Latest news</a><br />
 				</li>
 				
 				<li style="padding-left: 15px;">
-					<a href="">Search news</a><br />
+					<a href="controller?command=go_to_search_news">Search news</a><br />
 				</li>
 					
 				<li style="padding-left: 15px;">
-					<a href="">Profile </a>
+					<a href="controller?command=go_to_user_profile">Profile </a>
 				</li>
 				
 				<c:if test="${sessionScope.role eq 'ADMIN'}">
