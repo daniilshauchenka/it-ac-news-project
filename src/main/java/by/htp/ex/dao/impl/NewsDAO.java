@@ -10,22 +10,22 @@ import java.util.List;
 
 import by.htp.ex.bean.News;
 import by.htp.ex.dao.INewsDAO;
-import by.htp.ex.dao.NewsDAOException;
-import by.htp.ex.dao.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
+import by.htp.ex.exception.DaoException;
+import by.htp.ex.exception.NewsDAOException;
 
 public class NewsDAO implements INewsDAO {
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 	
-	private final static String SQL_GETTING_LASTEST_NEWS = "SELECT * FROM news ORDER BY date_created DESC LIMIT ?";
+	private final static String SQL_GET_LASTEST_NEWS = "SELECT * FROM news where is_deleted = 0 ORDER BY date_created DESC LIMIT ?";
 
 	@Override
 	public List<News> getLatestList(int count) throws DaoException {
 		List<News> result = new ArrayList<News>();
 
 		try (Connection connection = connectionPool.takeConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(SQL_GETTING_LASTEST_NEWS)){
+				PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_LASTEST_NEWS)){
 			preparedStatement.setInt(1, count);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()){
@@ -35,51 +35,11 @@ public class NewsDAO implements INewsDAO {
 		}catch (SQLException | ConnectionPoolException e){
 			throw new DaoException(e);
 		}
-		
-		
-//		result.add(new News(1, "Объявлена Всеобщая Кальянизация! Все представители мужского пола должны незамедлительно явиться в районный лаунж и как следует накумариться.", 
-//				"Город, 31 мая 2023 г. - В смелом решении, которое точно вызовет недоумение у многих, городские власти объявили о запуске проекта \"Всеобщая кальянизация\". Согласно этому объявлению, каждый представитель мужского пола должен незамедлительно отправиться в свой районный лаунж, чтобы полностью погрузиться в мир ароматного дыма и беззаботного кумара.", 
-//				"	qw123",
-//				"05/31/23", 
-//				"src/main/webapp/images/kalik.jpg"));
-//		
-//		result.add(new News(2, "Ученые из Саратовской области открыли банку пива", 
-//				"Саратовская область, 31 мая 2023 г. - Группа исследователей из Саратовской области сделала революционное открытие, раскрыв тайну, хранящуюся внутри банки пива. После многолетних исследований и научных экспериментов ученые наконец-то разгадали загадку, что находится внутри этого популярного напитка.", 
-//				"Команда, состоящая из биохимиков, пищевых технологов и специалистов по анализу, долгие годы изучала состав и структуру пивной банки. Их целью было выяснить, какие компоненты и процессы делают это пенящееся напиток таким популярным среди миллионов людей.\r\n"
-//						+ "Исследователи использовали самые современные технологии и аналитические методы, чтобы проникнуть в секреты банки пива. Они проводили молекулярные исследования, анализируя состав пива на уровне атомов и молекул. Также были проведены специальные эксперименты, чтобы выяснить, какие процессы происходят внутри банки при длительном хранении и транспортировке.\r\n"
-//						+ "К основным результатам исследования относится выявление более 200 различных химических соединений, которые составляют пиво. Оказалось, что их сочетание и взаимодействие создают уникальный вкус и аромат напитка. Ученые также выяснили, что пиво содержит важные питательные вещества, такие как витамины, минералы и антиоксиданты, которые могут оказывать положительное влияние на здоровье человека.\r\n"
-//						+ "Следующим шагом для исследователей будет дальнейшее изучение процесса производства пива и его влияние на окружающую среду. Они надеются использовать свои результаты, чтобы разработать более эффективные и экологически чистые методы производства этого популярного напитка.\r\n"
-//						+ "Открытие этих саратовских ученых является значимым прорывом в понимании пивной промышленности и может привести к новым технологическим разработкам в этой области. Это открывает двери для улучшения качества пива и создания новых вкусовых комбинаций, радуя любителей этого напитка по всему миру.\r\n"
-//						+ "Саратовская область продолжает удивлять нас своими научными достижениями, и эта последняя находка подтверждает ее репутацию как центра инноваций и научных открытий. Пиво всегда было важной частью культуры и наследия региона, и теперь благодаря работе ученых мы можем лучше понять его секреты и насладиться этим популярным напитком с еще большим удовольствием.", 
-//						"05/31/23", 
-//				"https://cs10.pikabu.ru/post_img/big/2019/12/11/9/1576078123142810661.jpg"));
 		return result;
 	}
 	
 
-//	@Override
-//	public List<News> getList() throws DaoException {
-//		List<News> result = new ArrayList<News>();
-//		result.add(new News(1, "Объявлена Всеобщая Кальянизация! Все представители мужского пола должны незамедлительно явиться в районный лаунж и как следует накумариться.", 
-//				"Город, 31 мая 2023 г. - В смелом решении, которое точно вызовет недоумение у многих, городские власти объявили о запуске проекта \"Всеобщая кальянизация\". Согласно этому объявлению, каждый представитель мужского пола должен незамедлительно отправиться в свой районный лаунж, чтобы полностью погрузиться в мир ароматного дыма и беззаботного кумара.", 
-//				"	qw123",
-//				"05/31/23", 
-//				"src/main/webapp/images/kalik.jpg"));
-//		
-//		result.add(new News(2, "Ученые из Саратовской области открыли банку пива", 
-//				"Саратовская область, 31 мая 2023 г. - Группа исследователей из Саратовской области сделала революционное открытие, раскрыв тайну, хранящуюся внутри банки пива. После многолетних исследований и научных экспериментов ученые наконец-то разгадали загадку, что находится внутри этого популярного напитка.", 
-//				"Команда, состоящая из биохимиков, пищевых технологов и специалистов по анализу, долгие годы изучала состав и структуру пивной банки. Их целью было выяснить, какие компоненты и процессы делают это пенящееся напиток таким популярным среди миллионов людей.\r\n"
-//						+ "Исследователи использовали самые современные технологии и аналитические методы, чтобы проникнуть в секреты банки пива. Они проводили молекулярные исследования, анализируя состав пива на уровне атомов и молекул. Также были проведены специальные эксперименты, чтобы выяснить, какие процессы происходят внутри банки при длительном хранении и транспортировке.\r\n"
-//						+ "К основным результатам исследования относится выявление более 200 различных химических соединений, которые составляют пиво. Оказалось, что их сочетание и взаимодействие создают уникальный вкус и аромат напитка. Ученые также выяснили, что пиво содержит важные питательные вещества, такие как витамины, минералы и антиоксиданты, которые могут оказывать положительное влияние на здоровье человека.\r\n"
-//						+ "Следующим шагом для исследователей будет дальнейшее изучение процесса производства пива и его влияние на окружающую среду. Они надеются использовать свои результаты, чтобы разработать более эффективные и экологически чистые методы производства этого популярного напитка.\r\n"
-//						+ "Открытие этих саратовских ученых является значимым прорывом в понимании пивной промышленности и может привести к новым технологическим разработкам в этой области. Это открывает двери для улучшения качества пива и создания новых вкусовых комбинаций, радуя любителей этого напитка по всему миру.\r\n"
-//						+ "Саратовская область продолжает удивлять нас своими научными достижениями, и эта последняя находка подтверждает ее репутацию как центра инноваций и научных открытий. Пиво всегда было важной частью культуры и наследия региона, и теперь благодаря работе ученых мы можем лучше понять его секреты и насладиться этим популярным напитком с еще большим удовольствием.", 
-//						"05/31/23", 
-//				"https://cs10.pikabu.ru/post_img/big/2019/12/11/9/1576078123142810661.jpg"));
-//
-//		return result;		
-//	}
-//	
+
 	
 	private News getFullNewsFromResultSet(ResultSet resultSet) throws SQLException {
 		News news = new News();
@@ -104,13 +64,14 @@ public class NewsDAO implements INewsDAO {
 	}
 	
 	
-	private final static String SQL_GETTING_NEWS = "SELECT * FROM news WHERE id = ?";
+	private final static String SQL_GET_SINGLE_NEWS = "SELECT * FROM news WHERE id = ?";
+	
 
 	@Override
 	public News fetchById(int id) throws DaoException {
 		News news = null;
 		try(Connection connection = connectionPool.takeConnection();
-				PreparedStatement statement = connection.prepareStatement(SQL_GETTING_NEWS)){
+				PreparedStatement statement = connection.prepareStatement(SQL_GET_SINGLE_NEWS)){
 				statement.setInt(1, id);
 				ResultSet resultSet = statement.executeQuery();
 
@@ -125,26 +86,22 @@ public class NewsDAO implements INewsDAO {
 			return news;
 	}
 
-	private final static String SQL_ADDING_NEWS = "INSERT INTO news (title, brief, content, image_path, user_id, date_created) VALUES (?, ?, ?, ?, ?, NOW())";
+	private final static String SQL_ADD_NEWS = "INSERT INTO news (title, brief, content, image_path, user_id, date_created) VALUES (?, ?, ?, ?, ?, NOW())";
 
 	@Override
 	public void addNews(News news) throws DaoException {
 		Connection connection = null;
 		PreparedStatement preparedStatementAddingNews = null;
 		try {
-			System.out.println("connection");
 			connection = connectionPool.takeConnection();
 			connection.setAutoCommit(false);
-			preparedStatementAddingNews = connection.prepareStatement(SQL_ADDING_NEWS);
+			preparedStatementAddingNews = connection.prepareStatement(SQL_ADD_NEWS);
 			preparedStatementAddingNews.setString(1, news.getTitle());
 			preparedStatementAddingNews.setString(2, news.getBriefNews());
 			preparedStatementAddingNews.setString(3, news.getContent());
 			preparedStatementAddingNews.setString(4, news.getImagePath());
 			preparedStatementAddingNews.setInt(5, news.getUserId());
-			
-			System.out.println("ready");
 			preparedStatementAddingNews.executeUpdate();
-			System.out.println("execute");
 			connection.setAutoCommit(true);
 		} catch (ConnectionPoolException | SQLException  e) {
 			e.printStackTrace();
@@ -166,23 +123,99 @@ public class NewsDAO implements INewsDAO {
 				throw new DaoException(e);
 			}
 		}
-			
-			
-			
-		
 	}
 
 	@Override
 	public void updateNews(News news) throws DaoException {
-		// TODO Auto-generated method stub
+		
 	}
 	
 
+	private final static String SQL_DELETE_NEWS = "UPDATE news SET is_deleted=1 WHERE id=?";
 
 	@Override
-	public void deleteNews(String[] idNews) throws DaoException {
-		// TODO Auto-generated method stub
+	public void deleteNews(int id) throws DaoException {
+		Connection connection = null;
+		PreparedStatement preparedStatementDeleteNews = null;
+		try {
+			connection = connectionPool.takeConnection();
+			connection.setAutoCommit(false);
+			preparedStatementDeleteNews = connection.prepareStatement(SQL_DELETE_NEWS);
+			preparedStatementDeleteNews.setInt(1, id);
+			preparedStatementDeleteNews.executeUpdate();
+			connection.setAutoCommit(true);
+		} catch (ConnectionPoolException | SQLException  e) {
+			e.printStackTrace();
+			if (connection != null) {
+				try {
+					connection.rollback();
+					if (!connection.getAutoCommit()) {
+						connection.setAutoCommit(true);
+					}
+				} catch (SQLException ex) {
+					throw new DaoException(ex);
+				}
+			}
+			throw new DaoException(e);
+		} finally {
+			try {
+				connectionPool.closeConnection(connection, preparedStatementDeleteNews);
+			} catch (ConnectionPoolException e) {
+				throw new DaoException(e);
+			}
+		}
+	}
 
+	private final static String SQL_RECOVER_NEWS = "UPDATE news SET is_deleted=0 WHERE id=?";
+
+	@Override
+	public void recoverNews(int id) throws DaoException {
+		Connection connection = null;
+		PreparedStatement preparedStatementDeleteNews = null;
+		try {
+			connection = connectionPool.takeConnection();
+			connection.setAutoCommit(false);
+			preparedStatementDeleteNews = connection.prepareStatement(SQL_DELETE_NEWS);
+			preparedStatementDeleteNews.setInt(1, id);
+			preparedStatementDeleteNews.executeUpdate();
+			connection.setAutoCommit(true);
+		} catch (ConnectionPoolException | SQLException  e) {
+			e.printStackTrace();
+			if (connection != null) {
+				try {
+					connection.rollback();
+					if (!connection.getAutoCommit()) {
+						connection.setAutoCommit(true);
+					}
+				} catch (SQLException ex) {
+					throw new DaoException(ex);
+				}
+			}
+			throw new DaoException(e);
+		} finally {
+			try {
+				connectionPool.closeConnection(connection, preparedStatementDeleteNews);
+			} catch (ConnectionPoolException e) {
+				throw new DaoException(e);
+			}
+		}
+	}
+
+
+
+	@Override
+	public void deleteMultipleNews(int[] id) throws DaoException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void recoverMultipleNews(int[] id) throws DaoException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

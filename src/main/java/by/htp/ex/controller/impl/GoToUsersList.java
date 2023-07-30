@@ -8,31 +8,31 @@ import by.htp.ex.bean.User;
 import by.htp.ex.controller.Command;
 import by.htp.ex.exception.ServiceException;
 import by.htp.ex.service.INewsService;
+import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class GoToBasePage implements Command{
+public class GoToUsersList implements Command {
 	
-	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
-
+	private final IUserService userService = ServiceProvider.getInstance().getUserService();
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		List<News> latestNews;
+		List<User> usersList;
 		try {
-			latestNews = newsService.latestList(5);
-			request.setAttribute(RequestParam.JSP_NEWS_LIST_PARAM_NAME, latestNews);
-			request.setAttribute(RequestParam.JSP_ERROR_PARAM_NAME, request.getSession(true).getAttribute(RequestParam.JSP_ERROR_PARAM_NAME));
+			usersList = userService.getList(0,30);
+			request.setAttribute(RequestParam.JSP_USERS_LIST_PARAM_NAME, usersList);
+			request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.USERS_LIST);
 			request.setAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME, request.getSession(true).getAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME));
-			request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.NEWS_LIST);
+			
+
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		} catch (ServiceException e) {
-			
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		
 	}
 

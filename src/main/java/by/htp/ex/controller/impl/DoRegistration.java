@@ -5,8 +5,8 @@ import java.io.IOException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import by.htp.ex.controller.Command;
+import by.htp.ex.exception.ServiceException;
 import by.htp.ex.bean.User;
-import by.htp.ex.service.ServiceException;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import jakarta.servlet.ServletException;
@@ -26,11 +26,10 @@ public class DoRegistration implements Command {
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");		
 		String passwordRepeat = request.getParameter("password-repeat");	
-		//ln(password+" "+passwordRepeat);
-		
+			
 		if (!passwordRepeat.equals(password)) {
 			request.getSession(true).setAttribute("message", "Entered passwords mismatch!");
-			response.sendRedirect("controller?command=go_to_base_page");
+			response.sendRedirect("controller?command=go_to_registration");
 			return;
 		}
 		String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
@@ -40,22 +39,14 @@ public class DoRegistration implements Command {
 		try {
 		
 			if(userService.registration(newUser)) {
-				//ln("REGISTERED");
 				String role = newUser.getRoleName();
-				//ln(role);
 				request.getSession(true).setAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME, RequestParam.USER_STATUS_ACTIVE);
 				request.getSession().setAttribute(RequestParam.JSP_USER_ROLE_PARAM_NAME, role);
 				request.getSession().setAttribute(RequestParam.JSP_USER_INFO_PARAM_NAME, newUser);
-			
-				request.getSession().setAttribute(RequestParam.JSP_MESSAGE_PARAM_NAME, "Registered!");
-				
-			}
-			//ln("DoRegistration redirecting to controller?command=go_to_base_page");
-			
+				request.getSession().setAttribute(RequestParam.JSP_MESSAGE_PARAM_NAME, "Registered!");			
+			}		
 			response.sendRedirect("controller?command=go_to_base_page");
-			return;
 		} catch (ServiceException e) {
-			//ln("reg error");
 			e.printStackTrace();
 			request.getSession().setAttribute("errorMessage", e.getMessage());
 			response.sendRedirect("controller?command=go_to_registration_page");

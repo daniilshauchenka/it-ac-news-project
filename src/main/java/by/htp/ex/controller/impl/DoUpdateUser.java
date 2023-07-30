@@ -5,7 +5,7 @@ import java.util.Enumeration;
 
 import by.htp.ex.bean.User;
 import by.htp.ex.controller.Command;
-import by.htp.ex.service.ServiceException;
+import by.htp.ex.exception.ServiceException;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.impl.UserServiceImpl;

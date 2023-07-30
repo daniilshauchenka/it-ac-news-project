@@ -13,18 +13,19 @@ public class News implements Serializable {
 	private String newsDate;
 	private String imagePath;
 	private int userId;
+	private boolean isDeleted;
 	
 	public News() {
 		super();
 	}
 	
-	public News( String title, String briefNews, String content, String newsDate, String imagePath, int userId) {
+	public News( String title, String briefNews, String content, String imagePath, int userId) {
 		super();
 	
 		this.title = title;
 		this.briefNews = briefNews;
 		this.content = content;
-		this.newsDate = newsDate;
+
 		this.imagePath = imagePath;
 		this.userId = userId;
 	}
@@ -95,6 +96,14 @@ public class News implements Serializable {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	
+	public boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(boolean isDeleted) {
+		this.isDeleted= isDeleted;
 	}
 	@Override
 	public String toString() {

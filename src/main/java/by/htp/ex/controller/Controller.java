@@ -24,32 +24,27 @@ public class Controller extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Enumeration<String> attributes = request.getSession().getAttributeNames();
-		while (attributes.hasMoreElements()) {
-		    String attribute = (String) attributes.nextElement();
-		   // System.out.println(attribute+" : "+request.getSession().getAttribute(attribute));
-		}
-		
-		
-		
-		
 		String commandName = request.getParameter("command");
+		System.out.println("get");
+		Enumeration attrs = request.getAttributeNames();
+		while (attrs.hasMoreElements()) {
+			System.out.println("attruibute " + attrs.nextElement());
+		}
 		Command command = provider.getCommand(commandName);
 		command.execute(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Enumeration<String> attributes = request.getSession().getAttributeNames();
-		
-		while (attributes.hasMoreElements()) {
-		    String attribute = (String) attributes.nextElement();
-		    //System.out.println(attribute+" : "+request.getSession().getAttribute(attribute));
+		System.out.println("post");
+		Enumeration attrs = request.getParameterNames();
+		while (attrs.hasMoreElements()) {
+			System.out.println("attruibute " + attrs.nextElement());
 		}
 		String commandName = request.getParameter("command");
 		Command command = provider.getCommand(commandName);

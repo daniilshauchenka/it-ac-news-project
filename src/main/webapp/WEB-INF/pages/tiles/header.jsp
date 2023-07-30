@@ -34,6 +34,8 @@
 
 		</c:if>
 		
+		<c:out value="${requestScope.message}"/>
+		
 		<c:if test="${sessionScope.userStatus eq 'active'}">
 		
 			<div align="right">

@@ -5,13 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
+import by.htp.ex.bean.News;
 import by.htp.ex.bean.Role;
 import by.htp.ex.bean.User;
-import by.htp.ex.dao.DaoException;
 import by.htp.ex.dao.IUserDAO;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
+import by.htp.ex.exception.DaoException;
 import by.htp.ex.util.validation.UserDataValidation;
 import by.htp.ex.util.validation.ValidationProvider;
 
@@ -36,18 +39,17 @@ public class UserDAO implements IUserDAO {
 	public User authorization(String login, String password) throws DaoException {
 		try (Connection connection = connectionPool.takeConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_AUTH_USER)) {
-		
+
 			preparedStatement.setString(1, login);
-		
+
 			ResultSet resultSet = null;
 			try {
 				resultSet = preparedStatement.executeQuery();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
-			
+
 			if (!resultSet.next()) {
-	
 				throw new DaoException("User doesn't exist");
 			}
 
@@ -56,8 +58,7 @@ public class UserDAO implements IUserDAO {
 			}
 
 			User user = getUserFromResultSet(resultSet);
-			System.out.println(user.toString());
-			// user.setLocale(null);
+		
 			return user;
 		} catch (SQLException e) {
 			throw new DaoException("Error with SQL", e);
@@ -68,13 +69,13 @@ public class UserDAO implements IUserDAO {
 
 	public User getUserFromResultSet(ResultSet resultSet) throws DaoException, SQLException {
 		User user = new User();
-	
+
 		user.setId(resultSet.getInt("id"));
 		user.setLogin(resultSet.getString("login"));
 		user.setEmail(resultSet.getString("email"));
 		user.setName(resultSet.getString("name"));
 		user.setSurname(resultSet.getString("surname"));
-	//	user.setPassword(resultSet.getString("password"));
+		// user.setPassword(resultSet.getString("password"));
 		String role = resultSet.getString("role");
 		user.setRole(Role.valueOf(role.toUpperCase()));
 		if (user.getRole() == null) {
@@ -82,10 +83,10 @@ public class UserDAO implements IUserDAO {
 		}
 		return user;
 	}
-	
+
 	public User getUserCredentials(User user) {
 		return user;
-		
+
 	}
 
 	private final static String SQL_ADDING_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
@@ -96,7 +97,7 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public boolean registration(User user) throws DaoException {
-		//ln(user);
+		// ln(user);
 		boolean result = false;
 		Connection connection = null;
 		PreparedStatement preparedStatementAddingUser = null;
@@ -137,7 +138,7 @@ public class UserDAO implements IUserDAO {
 
 			connection.setAutoCommit(true);
 			return true;
-		} catch (ConnectionPoolException | SQLException |DaoException e) {
+		} catch (ConnectionPoolException | SQLException | DaoException e) {
 
 			if (connection != null) {
 				try {
@@ -156,7 +157,7 @@ public class UserDAO implements IUserDAO {
 				// connectionPool.closeConnection(preparedStatementAddLocal);
 				connectionPool.closeConnection(preparedStatementAddingUserInfo);
 				connectionPool.closeConnection(preparedStatementAddingUserRole);
-				//ln("connections closed");
+				// ln("connections closed");
 			} catch (ConnectionPoolException e) {
 				throw new DaoException(e);
 			}
@@ -169,18 +170,73 @@ public class UserDAO implements IUserDAO {
 	private boolean userExists(User user, Connection connection) throws SQLException {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_CHECK_USER_EXIST);
-			//ln("checking if user exists");
+			// ln("checking if user exists");
 
 			preparedStatement.setString(1, user.getEmail());
 			preparedStatement.setString(2, user.getLogin());
 			// preparedStatement.setInt(3, user.getId());
 			ResultSet resultSet = preparedStatement.executeQuery();
-			//ln("checked");
+			// ln("checked");
 
 			return resultSet.next();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 		return false;
+	}
+
+	private final static String SQL_TO_AUTH_USER123 = "select users.id, login, password, email, users_info.name, users_info.surname, roles.name as role from users left join users_has_roles on users.id = users_has_roles.users_id left "
+			+ "join roles on users_has_roles.roles_id = roles.id left join users_info on users.id=users_info.users_id where login = ?";
+
+	private final static String SQL_GET_USER_LIST = "SELECT users.id as id, login,  email, users_info.name, users_info.surname, roles.name as role FROM users "
+			+ "left join users_has_roles on users.id = users_has_roles.users_id left join roles on users_has_roles.roles_id = roles.id left join users_info on users.id=users_info.users_id ORDER BY id ASC LIMIT ?";
+
+	@Override
+	public List<User> getList(int start, int count) throws DaoException {
+		List<User> result = new ArrayList<User>();
+		try (Connection connection = connectionPool.takeConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_USER_LIST)) {
+			preparedStatement.setInt(1, count);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+
+				User user = new User(resultSet.getInt("id"), resultSet.getString("login"),
+						Role.valueOf(resultSet.getString("role")));
+				result.add(user);
+
+			}
+			return result;
+
+		} catch (SQLException | ConnectionPoolException e) {
+			throw new DaoException(e);
+		}
+
+	}
+
+	private final static String SQL_GET_SINGLE_USER = "select login, email, users_info.name as name, users_info.surname as surname, roles.name as role from users left join users_has_roles on users.id = users_has_roles.users_id left "
+			+ "join roles on users_has_roles.roles_id = roles.id left join users_info on users.id=users_info.users_id where users.id = ?";
+
+//	private final static String SQL_GET_SINGLE_USER = "SELECT * FROM users WHERE id = ?";
+
+	@Override
+	public User getUserById(int id) throws DaoException {
+		User user = null;
+		try (Connection connection = connectionPool.takeConnection();
+				PreparedStatement statement = connection.prepareStatement(SQL_GET_SINGLE_USER)) {
+			statement.setInt(1, id);
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				String name = resultSet.getString("name");
+				String surname = resultSet.getString("surname");
+				String login = resultSet.getString("login");
+				String email = resultSet.getString("email");
+				Role role = Role.valueOf(resultSet.getString("role"));
+				user = new User(id, login, email, name, surname, role);
+			}
+			return user;
+		} catch (SQLException | ConnectionPoolException e) {
+			throw new DaoException(e);
+		}
 	}
 }

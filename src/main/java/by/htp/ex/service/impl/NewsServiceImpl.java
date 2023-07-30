@@ -3,12 +3,12 @@ package by.htp.ex.service.impl;
 import java.util.List;
 
 import by.htp.ex.bean.News;
-import by.htp.ex.dao.DaoException;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.INewsDAO;
-import by.htp.ex.dao.NewsDAOException;
+import by.htp.ex.exception.DaoException;
+import by.htp.ex.exception.NewsDAOException;
+import by.htp.ex.exception.ServiceException;
 import by.htp.ex.service.INewsService;
-import by.htp.ex.service.ServiceException;
 
 public class NewsServiceImpl implements INewsService{
 
@@ -55,9 +55,14 @@ public class NewsServiceImpl implements INewsService{
 		}
 	}
 
+	
 	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
+	public void delete(int id) throws ServiceException{
+		try {
+			newsDAO.deleteNews(id);
+		}catch (DaoException e) {
+			throw new ServiceException(e);
+		}
 		
 	}
 

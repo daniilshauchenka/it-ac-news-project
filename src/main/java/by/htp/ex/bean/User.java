@@ -12,7 +12,7 @@ public class User {
 	private String name;
 	private String surname;
 	private Role role;
-	private List<News> createdNewsList;
+
 	private List<News> favoriteNewsList;
 	private List<News> viewedNewsList;
 // добавить статус? как это лушче делать, по аналогу с ролями или просто String statusName
@@ -21,6 +21,21 @@ public class User {
 	
 	
 	public User(){}
+	
+	public User(int id, String login, Role role){
+		this.login = login;
+		this.id = id;
+		this.role = role;
+	}
+	
+	public User(int id, String login, String email, String name, String surname, Role role){
+		this.login = login;
+		this.id = id;
+		this.role = role;
+		this.email = email;
+		this.name = name;
+		this.surname = surname;
+	}
 	
 	public User(int id, String login, String password){
 		this.login = login;
@@ -127,13 +142,7 @@ public class User {
 		this.role = role;
 	}
 
-	public List<News> getCreatedNewsList() {
-		return createdNewsList;
-	}
 
-	public void setCreatedNewsList(List<News> createdNewsList) {
-		this.createdNewsList = createdNewsList;
-	}
 
 	public List<News> getFavoriteNewsList() {
 		return favoriteNewsList;
@@ -154,8 +163,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", login=" + login + ", password=" + password + ", email=" + email + ", name=" + name
-				+ ", surname=" + surname + ", role=" + role + ", createdNewsList=" + createdNewsList
-				+ ", favoriteNewsList=" + favoriteNewsList + ", viewedNewsList=" + viewedNewsList + "]";
+				+ ", surname=" + surname + ", role=" + role + ", favoriteNewsList=" + favoriteNewsList + ", viewedNewsList=" + viewedNewsList + "]";
 	}
 
 	public Locale getLocale() {
@@ -173,7 +181,5 @@ public class User {
 	public void setBanned(boolean isBanned) {
 		this.isBanned = isBanned;
 	}
-	
-	
 }
 

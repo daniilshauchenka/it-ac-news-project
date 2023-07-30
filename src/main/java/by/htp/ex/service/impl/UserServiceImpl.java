@@ -1,60 +1,69 @@
 package by.htp.ex.service.impl;
 
+import java.util.List;
+
 import by.htp.ex.bean.User;
-import by.htp.ex.dao.DaoException;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.IUserDAO;
-import by.htp.ex.service.ServiceException;
+import by.htp.ex.exception.DaoException;
+import by.htp.ex.exception.ServiceException;
 import by.htp.ex.service.IUserService;
+import by.htp.ex.util.validation.UserDataValidation;
+import by.htp.ex.util.validation.ValidationProvider;
 
 public class UserServiceImpl implements IUserService {
 
 	private final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
-//	private final UserDataValidation userDataValidation = ValidationProvider.getIntsance().getUserDataVelidation();
+	private final UserDataValidation userDataValidation = ValidationProvider.getInstance().getUserValidator();
 
 	@Override
 	public User authorization(String login, String password) throws ServiceException {
-		
-		/*
-		 * if(!userDataValidation.checkAUthData(login, password)) { throw new
-		 * ServiceException("login ...... "); }
-		 */
+
 		try {
-			//ln("service");
+
 			User user = userDAO.authorization(login, password);
-			//ln("service end");
+
 			return user;
+		} catch (DaoException e) {
+
+			throw new ServiceException(e.getMessage());
 		}
-	catch(DaoException e)
-	{
-		//ln("serice error");
-		throw new ServiceException(e);
-	}
 
 	}
 
 	@Override
 	public boolean registration(User user) throws ServiceException {
 		try {
-			//ln("reg service");
+			
 			boolean result = userDAO.registration(user);
-			//ln("service end");
+			
 			return result;
-				}
-	catch(DaoException e)
-	{
-		throw new ServiceException(e.getMessage());
+		} catch (DaoException e) {
+			throw new ServiceException(e.getMessage());
+		}
 	}
-	}
+
+
+
 	@Override
-	public User getUserById(int id) {
-		return null;
+	public List<User> getList(int start, int count) throws ServiceException {
+		try {
+			//TODO
+			return userDAO.getList(0, 30);
+		} catch(DaoException e) {
+			throw new ServiceException(e.getMessage());
+		}
+		
 	}
 
 	@Override
-	public User getCurrentUser() {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUserById(int id) throws ServiceException {
+		try {
+			return userDAO.getUserById(id);
+		}catch(DaoException e) {
+			throw new ServiceException(e.getMessage());
+		}
+	
 	}
 
 }
