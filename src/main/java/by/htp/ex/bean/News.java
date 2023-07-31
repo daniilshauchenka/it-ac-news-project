@@ -12,8 +12,9 @@ public class News implements Serializable {
 	private String content;
 	private String newsDate;
 	private String imagePath;
-	private int userId;
+	private int authorId;
 	private boolean isDeleted;
+	private User author;
 	
 	public News() {
 		super();
@@ -27,7 +28,7 @@ public class News implements Serializable {
 		this.content = content;
 
 		this.imagePath = imagePath;
-		this.userId = userId;
+		this.authorId = userId;
 	}
 	
 
@@ -90,12 +91,12 @@ public class News implements Serializable {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
-	public int getUserId() {
-		return userId;
+	public int getAuthorId() {
+		return authorId;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setAuthorId(int authorId) {
+		this.authorId = authorId;
 	}
 	
 	public boolean getIsDeleted() {
@@ -108,7 +109,15 @@ public class News implements Serializable {
 	@Override
 	public String toString() {
 		return "News [id=" + id + ", title=" + title + ", briefNews=" + briefNews 
-				+ ", newsDate=" + newsDate + ", imagePath=" + imagePath + "userId = " + userId+"]";
+				+ ", newsDate=" + newsDate + ", imagePath=" + imagePath + ", author = " + author+"]";
+	}
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
 	}	
 	
 

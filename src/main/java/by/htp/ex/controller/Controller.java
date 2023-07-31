@@ -2,6 +2,7 @@ package by.htp.ex.controller;
 
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
@@ -30,10 +31,10 @@ public class Controller extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String commandName = request.getParameter("command");
-		System.out.println("get");
-		Enumeration attrs = request.getAttributeNames();
-		while (attrs.hasMoreElements()) {
-			System.out.println("attruibute " + attrs.nextElement());
+		System.out.println("get" + commandName);
+		Iterator<String> attrs = request.getSession(true).getAttributeNames().asIterator();
+		while (attrs.hasNext()) {
+			System.out.println(attrs + " : " + request.getSession().getAttribute(attrs.next()));
 		}
 		Command command = provider.getCommand(commandName);
 		command.execute(request, response);
@@ -41,12 +42,15 @@ public class Controller extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("post");
-		Enumeration attrs = request.getParameterNames();
-		while (attrs.hasMoreElements()) {
-			System.out.println("attruibute " + attrs.nextElement());
+		Iterator<String> attrs = request.getSession(true).getAttributeNames().asIterator();
+		while (attrs.hasNext()) {
+			String attr = attrs.next();
+			System.out.println(attr.toString() + " : " + request.getSession().getAttribute(attr));
 		}
+
 		String commandName = request.getParameter("command");
+		System.out.println("post" + commandName);
+
 		Command command = provider.getCommand(commandName);
 		command.execute(request, response);
 	}

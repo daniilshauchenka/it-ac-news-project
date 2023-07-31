@@ -3,21 +3,8 @@ package by.htp.ex.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import by.htp.ex.controller.impl.DoAddNews;
-import by.htp.ex.controller.impl.DoAuthorization;
-import by.htp.ex.controller.impl.DoDeleteNews;
-import by.htp.ex.controller.impl.DoRegistration;
-import by.htp.ex.controller.impl.DoSignOut;
-import by.htp.ex.controller.impl.DoUpdateUser;
-import by.htp.ex.controller.impl.GoToAddNews;
-import by.htp.ex.controller.impl.GoToBasePage;
-import by.htp.ex.controller.impl.GoToEditUserProfile;
-import by.htp.ex.controller.impl.GoToNewsList;
-import by.htp.ex.controller.impl.GoToRegistrationPage;
-import by.htp.ex.controller.impl.GoToUserProfile;
-import by.htp.ex.controller.impl.GoToUsersList;
-import by.htp.ex.controller.impl.GoToViewNews;
-import by.htp.ex.controller.impl.GoToViewUser;
+import by.htp.ex.controller.impl.*;
+
 
 public class CommandProvider {
 	private Map<CommandName, Command> commands = new HashMap<>();
@@ -31,6 +18,8 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_NEWS_LIST, new GoToNewsList());
 		commands.put(CommandName.GO_TO_VIEW_NEWS, new GoToViewNews());
 		commands.put(CommandName.UNDEFINED, new GoToBasePage());
+		commands.put(CommandName.GO_TO_EDIT_NEWS, new GoToEditNews());
+		commands.put(CommandName.DO_EDIT_NEWS, new DoEditNews());
 		
 		commands.put(CommandName.GO_TO_USER_PROFILE, new GoToUserProfile());
 		commands.put(CommandName.GO_TO_EDIT_USER_PROFILE, new GoToEditUserProfile());
@@ -40,6 +29,9 @@ public class CommandProvider {
 		commands.put(CommandName.DO_DELETE_NEWS, new DoDeleteNews());
 		commands.put(CommandName.GO_TO_USERS_LIST, new GoToUsersList());
 		commands.put(CommandName.GO_TO_VIEW_USER, new GoToViewUser());
+		commands.put(CommandName.GO_TO_ERROR_PAGE, new GoToErrorPage());
+		
+				
 		
 	}
 	
@@ -47,7 +39,9 @@ public class CommandProvider {
 	public Command getCommand(String name) {
 		CommandName  commandName = CommandName.UNDEFINED;
 		try {
-			commandName = CommandName.valueOf(name.toUpperCase());	
+			if(name!=null) {
+				commandName = CommandName.valueOf(name.toUpperCase());
+			}
 		} catch(IllegalArgumentException e) {
 		//ignore
 			//log?

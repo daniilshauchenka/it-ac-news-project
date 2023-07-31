@@ -29,6 +29,7 @@ public class RequestParam {
 	final static String USER_STATUS_ACTIVE = "active";
 	final static String USER_STATUS_NOT_ACTIVE = "notActive";
 	final static String USER_PROFILE = "userProfile";
+	final static String ERROR_PAGE = "errorPage";
 	final static String VIEW_NEWS= "viewNews";
 	final static String VIEW_USER= "viewUser";
 	final static String NEWS_LIST = "newsList";

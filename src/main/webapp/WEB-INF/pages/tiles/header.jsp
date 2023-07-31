@@ -1,16 +1,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+
+<fmt:setBundle basename="localization/bundle"/>
 
 <div class="wrapper">
 	<a class="newstitle" href="controller?command=go_to_news_list">News management</a>
-	
 	
 
 	<div class="local-link">
 
 		<div align="right">
 
-			<a href=""> en </a> &nbsp;&nbsp; 
-			<a	href=""> ru </a> <br /> <br />
+			<a href="controller?${requestScope['jakarta.servlet.forward.query_string']}&cookieLocale=en">111 <fmt:message key="label.lang.en" /> </a> &nbsp;&nbsp; 
+			<a	href="controller?${requestScope['jakarta.servlet.forward.query_string']}&cookieLocale=ru"> 222<fmt:message key="label.lang.ru" /> </a> <br /> <br />
 		</div>
 
 		<c:if test="${not (sessionScope.userStatus eq 'active') and not (requestScope.presentation eq 'registration')}">
@@ -35,7 +38,8 @@
 		</c:if>
 		
 		<c:out value="${requestScope.message}"/>
-		
+			<c:out value="${requestScope.errorMessage}"/>
+	
 		<c:if test="${sessionScope.userStatus eq 'active'}">
 		
 			<div align="right">

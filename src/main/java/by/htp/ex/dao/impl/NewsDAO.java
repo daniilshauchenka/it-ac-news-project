@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.htp.ex.bean.News;
+import by.htp.ex.bean.User;
 import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
@@ -18,7 +19,14 @@ import by.htp.ex.exception.NewsDAOException;
 public class NewsDAO implements INewsDAO {
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 	
-	private final static String SQL_GET_LASTEST_NEWS = "SELECT * FROM news where is_deleted = 0 ORDER BY date_created DESC LIMIT ?";
+//	private final static String SQL_GET_LASTEST_NEWS = "SELECT * FROM news where is_deleted = 0 ORDER BY date_created DESC LIMIT ?";
+
+	private final static String SQL_GET_LASTEST_NEWS = "SELECT news.id as id, news.is_deleted as is_deleted, "
+			+ "news.title as title, news.brief as brief, news.content as content, news.date_created as date_created, "
+			+ "news.image_path as image_path, users.id as author_id, users_info.name as author_name, users_info.surname as author_surname, "
+			+ "users.login as author_login from news left join users on news.author_id = users.id left join "
+			+ "users_info on users.id=users_info.users_id where news.is_deleted = 0 ORDER BY news.date_created "
+			+ "DESC LIMIT ?";
 
 	@Override
 	public List<News> getLatestList(int count) throws DaoException {
@@ -41,7 +49,7 @@ public class NewsDAO implements INewsDAO {
 
 
 	
-	private News getFullNewsFromResultSet(ResultSet resultSet) throws SQLException {
+	private News getFullNewsFromResultSet(ResultSet resultSet) throws SQLException, DaoException {
 		News news = new News();
 		news.setIdNews(resultSet.getInt("id"));
 		news.setBriefNews(resultSet.getString("brief"));
@@ -49,23 +57,41 @@ public class NewsDAO implements INewsDAO {
 		news.setNewsDate(resultSet.getTimestamp("date_created").toString());
 		news.setTitle(resultSet.getString("title"));
 		news.setImagePath(resultSet.getString("image_path"));
-	
-		return news;
+		
+		try {
+			news.setAuthorId(Integer.parseInt(resultSet.getString("author_id")));	
+			User user = new User();
+			user.setId(news.getAuthorId());
+			user.setLogin(resultSet.getString("author_login"));
+			user.setName(resultSet.getString("author_name"));
+			user.setSurname(resultSet.getString("author_surname"));
+			news.setAuthor(user);
+		}catch (IllegalArgumentException e) {
+			throw new DaoException("Author not found");
+		}
+		
+		
+			return news;
 	}
 	
-	private News getBriefNewsFromResultSet(ResultSet resultSet) throws SQLException {
-		News news = new News();
-		news.setIdNews(resultSet.getInt("id"));
-		news.setBriefNews(resultSet.getString("brief"));
-		news.setNewsDate(resultSet.getDate("date_created").toString());
-		news.setTitle(resultSet.getString("title"));
-			System.out.println(news);
-		return news;
-	}
+//	private News getBriefNewsFromResultSet(ResultSet resultSet) throws SQLException {
+//		News news = new News();
+//		news.setIdNews(resultSet.getInt("id"));
+//		news.setBriefNews(resultSet.getString("brief"));
+//		news.setNewsDate(resultSet.getDate("date_created").toString());
+//		news.setTitle(resultSet.getString("title"));
+//			System.out.println(news);
+//		return news;
+//	}
 	
 	
-	private final static String SQL_GET_SINGLE_NEWS = "SELECT * FROM news WHERE id = ?";
+//	private final static String SQL_GET_SINGLE_NEWS = "SELECT * FROM news WHERE id = ?";
 	
+	private final static String SQL_GET_SINGLE_NEWS = "SELECT news.id as id, news.is_deleted as is_deleted, "
+			+ "news.title as title, news.brief as brief, news.content as content, news.date_created as date_created, "
+			+ "news.image_path as image_path, users.id as author_id, users_info.name as author_name, users_info.surname as author_surname, "
+			+ "users.login as author_login from news left join users on news.author_id = users.id left join "
+			+ "users_info on users.id=users_info.users_id where news.id = ?";
 
 	@Override
 	public News fetchById(int id) throws DaoException {
@@ -82,11 +108,11 @@ public class NewsDAO implements INewsDAO {
 			catch (SQLException |ConnectionPoolException e){
 				throw new DaoException(e);
 			}
-	
+	System.out.println(news);
 			return news;
 	}
 
-	private final static String SQL_ADD_NEWS = "INSERT INTO news (title, brief, content, image_path, user_id, date_created) VALUES (?, ?, ?, ?, ?, NOW())";
+	private final static String SQL_ADD_NEWS = "INSERT INTO news (title, brief, content, image_path, author_id, date_created) VALUES (?, ?, ?, ?, ?, NOW())";
 
 	@Override
 	public void addNews(News news) throws DaoException {
@@ -100,7 +126,7 @@ public class NewsDAO implements INewsDAO {
 			preparedStatementAddingNews.setString(2, news.getBriefNews());
 			preparedStatementAddingNews.setString(3, news.getContent());
 			preparedStatementAddingNews.setString(4, news.getImagePath());
-			preparedStatementAddingNews.setInt(5, news.getUserId());
+			preparedStatementAddingNews.setInt(5, news.getAuthorId());
 			preparedStatementAddingNews.executeUpdate();
 			connection.setAutoCommit(true);
 		} catch (ConnectionPoolException | SQLException  e) {
@@ -125,9 +151,43 @@ public class NewsDAO implements INewsDAO {
 		}
 	}
 
+	private final static String SQL_UPDATE_NEWS = "UPDATE news SET title=?, brief=?, content=?, image_path=?  WHERE id=?";
+
 	@Override
-	public void updateNews(News news) throws DaoException {
-		
+	public void updateNews(int id, News news) throws DaoException {
+		Connection connection = null;
+		PreparedStatement preparedStatementDeleteNews = null;
+		try {
+			connection = connectionPool.takeConnection();
+			connection.setAutoCommit(false);
+			preparedStatementDeleteNews = connection.prepareStatement(SQL_UPDATE_NEWS);
+			preparedStatementDeleteNews.setString(1, news.getTitle());
+			preparedStatementDeleteNews.setString(2, news.getBriefNews());
+			preparedStatementDeleteNews.setString(3, news.getContent());
+			preparedStatementDeleteNews.setString(4, news.getImagePath());
+			preparedStatementDeleteNews.setInt(5, id);
+			preparedStatementDeleteNews.executeUpdate();
+			connection.setAutoCommit(true);
+		} catch (ConnectionPoolException | SQLException  e) {
+			e.printStackTrace();
+			if (connection != null) {
+				try {
+					connection.rollback();
+					if (!connection.getAutoCommit()) {
+						connection.setAutoCommit(true);
+					}
+				} catch (SQLException ex) {
+					throw new DaoException(ex);
+				}
+			}
+			throw new DaoException(e);
+		} finally {
+			try {
+				connectionPool.closeConnection(connection, preparedStatementDeleteNews);
+			} catch (ConnectionPoolException e) {
+				throw new DaoException(e);
+			}
+		}
 	}
 	
 

@@ -6,32 +6,25 @@
 </div>
 
 <c:if test="${sessionScope.role eq 'admin'.toUpperCase()}">
-						      <a href="">ban</a> 
-			
-<form action="" method="post">
-	<c:forEach var="user" items="${requestScope.usersList}">
-		<div class="single-news-wrapper">
-			<div class="single-news-header-wrapper">
-				<div class="news-title">
-					<a href="controller?command=go_to_view_user&id=${user.id}"><c:out value="${user.login} " /></a> 
-				</div>
+	<a href="">ban</a>
 
-				<div class="news-link-to-wrapper">
-					<div class="link-position">
-						      <a href="">ban</a> 
-					
+	<form action="" method="post">
+		<c:forEach var="user" items="${requestScope.usersList}">
+			<div class="single-news-wrapper">
+				<div class="single-news-header-wrapper">
+					<div class="news-title">
+						<a href="controller?command=go_to_view_user&id=${user.id}"><c:out
+								value="${user.login} ${user} " /></a>
 					</div>
 				</div>
 			</div>
-		</div>
+		</c:forEach>
 
-	</c:forEach>
-
-	<div class="no-news">
-		<c:if test="${requestScope.usersList eq null}">
+		<div class="no-news">
+			<c:if test="${requestScope.usersList eq null}">
         No users.
 	</c:if>
-	</div>
-</form>
+		</div>
+	</form>
 
 </c:if>

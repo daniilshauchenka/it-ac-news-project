@@ -3,18 +3,20 @@ package by.htp.ex.service.impl;
 import java.util.List;
 
 import by.htp.ex.bean.News;
+import by.htp.ex.bean.User;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.exception.DaoException;
 import by.htp.ex.exception.NewsDAOException;
 import by.htp.ex.exception.ServiceException;
 import by.htp.ex.service.INewsService;
+import by.htp.ex.service.IUserService;
+import by.htp.ex.service.ServiceProvider;
 
 public class NewsServiceImpl implements INewsService{
 
 	private final INewsDAO newsDAO = DaoProvider.getInstance().getNewsDAO();
 	
-
 
 	@Override
 	public List<News> latestList(int count) throws ServiceException {
@@ -38,7 +40,8 @@ public class NewsServiceImpl implements INewsService{
 	@Override
 	public News findById(int id) throws ServiceException {
 		try {
-			return newsDAO.fetchById(id);
+			News news = newsDAO.fetchById(id);
+			return news;
 		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
@@ -67,8 +70,12 @@ public class NewsServiceImpl implements INewsService{
 	}
 
 	@Override
-	public void update(int id) {
-		// TODO Auto-generated method stub
+	public void update(int id, News news) throws ServiceException {
+		try {
+			newsDAO.updateNews(id, news);
+		}catch (DaoException e) {
+			throw new ServiceException(e);
+		}
 		
 	}
 

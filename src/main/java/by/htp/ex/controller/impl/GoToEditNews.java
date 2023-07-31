@@ -15,20 +15,27 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToEditNews implements Command {
-	private final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		request.setAttribute(RequestParam.JSP_USER_INFO_PARAM_NAME, request.getSession().getAttribute(RequestParam.JSP_USER_INFO_PARAM_NAME));
-		request.setAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME, RequestParam.USER_STATUS_ACTIVE);
-		request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.VIEW_NEWS);
-		request.setAttribute(RequestParam.JSP_ACTION_PARAM_NAME, RequestParam.EDIT_ACTION);
-		request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
+		News news;
+		String id = request.getParameter("id");
+	System.out.println("id "+id);
+		try {
+			news = newsService.findById(Integer.parseInt(id));
+			request.setAttribute(RequestParam.JSP_SINGLE_NEWS_PARAM_NAME, news);
+			request.setAttribute(RequestParam.JSP_USER_INFO_PARAM_NAME,
+					request.getSession().getAttribute(RequestParam.JSP_USER_INFO_PARAM_NAME));
+			request.setAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME, RequestParam.USER_STATUS_ACTIVE);
+			request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.VIEW_NEWS);
+			request.setAttribute(RequestParam.JSP_ACTION_PARAM_NAME, RequestParam.EDIT_ACTION);
+			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		
-		
 //		try {
 //			//int userId = Integer.parseInt(request.getSession(true).getAttribute("userId").toString());
 //			//user = userService.getUserById(userId);
@@ -36,7 +43,7 @@ public class GoToEditNews implements Command {
 //		}catch (ServiceException e) {
 //			
 //		}
-	
+
 	}
 
 }

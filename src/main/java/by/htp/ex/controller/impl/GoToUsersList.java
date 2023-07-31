@@ -20,6 +20,17 @@ public class GoToUsersList implements Command {
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User currentUser;
+		
+		if(!(request.getSession(true).getAttribute(RequestParam.JSP_USER_STATUS_PARAM_NAME).equals(RequestParam.USER_STATUS_ACTIVE))) {
+			request.setAttribute("errorMessage", "You are not online.");
+
+			request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.ERROR_PAGE);
+			response.sendRedirect("controller?command=go_to_error_page");
+		}			
+		
+			
+		
 		List<User> usersList;
 		try {
 			usersList = userService.getList(0,30);
