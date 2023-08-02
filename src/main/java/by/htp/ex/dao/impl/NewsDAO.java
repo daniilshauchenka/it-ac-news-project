@@ -108,7 +108,7 @@ public class NewsDAO implements INewsDAO {
 			catch (SQLException |ConnectionPoolException e){
 				throw new DaoException(e);
 			}
-	System.out.println(news);
+
 			return news;
 	}
 

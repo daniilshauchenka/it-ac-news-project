@@ -21,7 +21,7 @@ public class GoToAddNews implements Command {
 		
 		request.setAttribute(RequestParam.JSP_ACTION_PARAM_NAME, RequestParam.ADD_ACTION);
 		request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.ADD_NEWS);
-
+	
 		request.setAttribute(RequestParam.JSP_LOCALE_PARAM_NAME, Locale.getDefault());
 		request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 

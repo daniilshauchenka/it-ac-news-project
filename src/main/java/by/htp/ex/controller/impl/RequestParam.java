@@ -15,6 +15,9 @@ public class RequestParam {
 	final static String JSP_SINGLE_NEWS_PARAM_NAME = "news";
 	final static String JSP_SINGLE_USER_PARAM_NAME = "user";
 	final static String JSP_COMMAND_PARAM_NAME = "command";
+	public final static String JSP_PREV_COMMAND_PARAM_NAME = "prevCommand";
+	public final static String JSP_PREV_QUERY_PARAM_NAME = "prevQuery";
+	
 	final static String JSP_ACTION_PARAM_NAME = "action";
 	final static String JSP_NEWS_TITLE_PARAM_NAME = "title";
 	final static String JSP_NEWS_BRIEF_PARAM_NAME = "brief";
@@ -22,7 +25,8 @@ public class RequestParam {
 	final static String JSP_NEWS_IMAGE_PATH_PARAM_NAME = "imagePath";
 	final static String JSP_NEWS_ID_PARAM_NAME = "id";
 	final static String JSP_USERS_LIST_PARAM_NAME = "usersList";
-	
+
+	public final static String URL_COOKIE_LOCALE_PARAM_NAME = "cookieLocale";
 	
 	
 	

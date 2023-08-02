@@ -1,18 +1,26 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt"
+          prefix="fmt" %>
+<jsp:useBean id="date" class="java.util.Date"/>
+<c:choose>
+	<c:when test="${not(cookie.locale eq null) }">
+		<fmt:setBundle basename="localization/bundle_${cookie['locale'].value}"/>
+		<fmt:setLocale value="${cookie['locale'].value}"/>
+	</c:when>
+		<c:when test="${cookie.locale eq null }">
+		<fmt:setBundle basename="localization/bundle_en"/>
+		<fmt:setLocale value="en_US"/>
+	</c:when>
+</c:choose>
 
 
-<div class="body-title">
-	<a href="">News >> </a> News List
-</div>
 
 <form action="" method="post">
 	<c:forEach var="news" items="${requestScope.newsList}">
 		<div class="single-news-wrapper">
 			<div class="single-news-header-wrapper">
 				<div class="news-title">
-					<a href="controller?command=go_to_view_news&id=${news.idNews}"><c:out value="${news.title}" /></a> 
-   				
-		
+					<a href="controller?command=go_to_view_news&id=${news.idNews}"><c:out value="${news.title}" /></a> 		
 				</div>
 				<div class="news-date">
 					<c:out value="${news.newsDate}" />
@@ -42,17 +50,13 @@
 
 	</c:forEach>
 
-	<!-- 	<logic:notEmpty name="newsForm" property="newsList">
-		<div class="delete-button-position">
-			<html:submit>
-				<bean:message key="locale.newslink.deletebutton" />
-			</html:submit>
-		</div>
-	</logic:notEmpty> -->
+
+
+
 
 	<div class="no-news">
 		<c:if test="${requestScope.newsList eq null}">
-        No news.
+      <fmt:message key="label.news_list.no_news" />"
 	</c:if>
 	</div>
 </form>

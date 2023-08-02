@@ -2,7 +2,18 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
+	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<c:choose>
+	<c:when test="${not(cookie.locale eq null) }">
+		<fmt:setBundle
+			basename="localization/bundle_${cookie['locale'].value}" />
+	</c:when>
+	<c:when test="${cookie.locale eq null }">
+		<fmt:setBundle basename="localization/bundle_en" />
+	</c:when>
+</c:choose>
+	
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,37 +21,62 @@
 
 </head>
 <body>
-	<a href="controller?command=go_to_base_page"> << Back </a> 
+<a href="controller?command=go_to_base_page"> <fmt:message
+			key="button.back" /></a> <br>
 	<form action="controller" method="post">
 	<c:out value="${sessionScope.errorMessage}"/>
 		<input type="hidden" name="command" value="do_registration" />
 		<div class="container">
-			<h1>Registration</h1>
-			<p>Please fill in this form to create an account.</p>
+			<h1><fmt:message key="label.registration.page_title"/></h1>
+			<p><fmt:message key="label.registration.caption"/></p>
 			<hr>
-<label for="name"><b>Name</b></label> <input type="text"
-				placeholder="Enter name" name="name" id="name" required>
-<label for="surname"><b>Surname</b></label> <input type="text"
-				placeholder="Enter surname" name="surname" id="surname" required>
-
-
-			<label for="login"><b>Login</b></label> <input type="text"
-				placeholder="Enter login" name="login" id="login" required>
-
-			<label for="email"><b>Email</b></label> <input type="text"
-				placeholder="Enter Email" name="email" id="email" required>
-
-
-
-			<label for="password"><b>Password</b></label> <input type="password"
-				placeholder="Enter Password" name="password" id="password" required>
-			<label for="password-repeat"><b>Repeat Password</b></label> <input
-				type="password" placeholder="Repeat Password" name="password-repeat"
-				id="password-repeat" required>
-			<hr>
-
+			
+				<table style="width:100%">
+			    <colgroup>
+     			 	<col span="1" style="width: 20%;">
+       				<col span="1" style="width: 80%;">
+     
+   				</colgroup>
+					
+			<tbody>
+				<tbody>
+					<tr>
+						<td><fmt:message key="label.registration.name" /></td>
+						<td><input type="text" value="${userInfo.name}"
+							placeholder="" name="name" id="name"></td>
+					</tr>
+					<tr>
+						<td><fmt:message key="label.registration.surname" /></td>
+						<td><input type="text" value="${userInfo.surname}"
+							placeholder="" name="surname" id="surname">
+						</td>
+					</tr>
+					<tr>
+						<td><fmt:message key="label.registration.email" /></td>
+						<td><input type="text" value="${userInfo.email}"
+							placeholder="" name="email" id="email"></td>
+					</tr>
+					<tr>
+						<td><fmt:message key="label.registration.login" /></td>
+						<td><input type="text" value="${userInfo.login}"
+							placeholder="" name="login" id="login"></td>
+					</tr>
+					<tr>
+						<td><fmt:message key="label.registration.password" /></td>
+						<td><input type="password" value=""
+							placeholder="" name="password" id="password"></td>
+					</tr>
+					<tr>
+						<td><fmt:message key="label.registration.repeat_password" /></td>
+						<td><input type="password" value=""
+							placeholder="" name="password-repeat" id="password-repeat"></td>
+					</tr>
 		
-			<button type="submit" class="registerbtn">Register</button>
+				</tbody>		
+			</table>
+			
+		
+			<button type="submit" class="registerbtn"><fmt:message key="button.registration.register" /></button>
 		</div>
 
 		

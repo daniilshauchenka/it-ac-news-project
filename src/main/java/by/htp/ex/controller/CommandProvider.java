@@ -31,7 +31,8 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_VIEW_USER, new GoToViewUser());
 		commands.put(CommandName.GO_TO_ERROR_PAGE, new GoToErrorPage());
 		
-				
+		commands.put(CommandName.CHANGE_LOCALE, new DoChangeLocale());
+			
 		
 	}
 	

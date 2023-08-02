@@ -2,6 +2,14 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:choose>
+	<c:when test="${not(cookie.locale eq null) }">
+		<fmt:setBundle basename="localization/bundle_${cookie['locale'].value}"/>
+	</c:when>
+		<c:when test="${cookie.locale eq null }">
+		<fmt:setBundle basename="localization/bundle_en"/>
+	</c:when>
+</c:choose>
 
 
 <%@page errorPage="../tiles/errorPage"%>
@@ -13,14 +21,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="script/validation.js"></script>
-<title><fmt:message key="label.welcome"/> <!-- <bean:message key="locale.linkname.headertitle" />
- -->
+<title><fmt:message key="label.header.project_title"/>
 </title>
 
 <link rel="stylesheet" type="text/css" href="styles/newsStyle.css">
 
 </head>
 <body>
+
 	<div class="page">
 		<div class="header">
 			<c:import url="/WEB-INF/pages/tiles/header.jsp" />
@@ -28,7 +36,6 @@
 
 		<div class="base-layout-wrapper">
 			<div class="menu">
-
 				<c:if test="${not (sessionScope.userStatus eq 'active')}">
 				   	<fmt:message key="label.welcome" />
 					<%-- <c:import url=""></c:import> --%>

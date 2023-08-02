@@ -1,57 +1,82 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<c:choose>
+	<c:when test="${not(cookie.locale eq null) }">
+		<fmt:setBundle
+			basename="localization/bundle_${cookie['locale'].value}" />
+		<fmt:setLocale value="${cookie['locale'].value}" />
+
+	</c:when>
+	<c:when test="${cookie.locale eq null }">
+		<fmt:setBundle basename="localization/bundle_en" />
+		<fmt:setLocale value="en" />
+
+	</c:when>
+</c:choose>
 
 
-<fmt:setBundle basename="localization/bundle"/>
 
 <div class="wrapper">
-	<a class="newstitle" href="controller?command=go_to_news_list">News management</a>
-	
+	<a class="newstitle" href="controller?command=go_to_news_list"><fmt:message
+			key="label.header.project_title" /></a>
+
 
 	<div class="local-link">
 
-		<div align="right">
+		<div align="right" >
+			<form action="controller" method="get"
+				style="display: inline-block; margin: 0">
+				<input type="hidden" name="command" value=change_locale> <input
+					type="hidden" name="cookieLocale" value="en"> <input
+					type="submit" value="<fmt:message key="label.lang.en"/>">
+			</form>
+			<form action="controller" method="get" style="display: inline-block">
+				<input type="hidden" name="command" value="change_locale"> <input
+					type="hidden" name="cookieLocale" value="ru"> <input
+					type="submit" value="<fmt:message key="label.lang.ru"/>">
+			</form>
+			<br>
+	
+			
 
-			<a href="controller?${requestScope['jakarta.servlet.forward.query_string']}&cookieLocale=en">111 <fmt:message key="label.lang.en" /> </a> &nbsp;&nbsp; 
-			<a	href="controller?${requestScope['jakarta.servlet.forward.query_string']}&cookieLocale=ru"> 222<fmt:message key="label.lang.ru" /> </a> <br /> <br />
-		</div>
 
-		<c:if test="${not (sessionScope.userStatus eq 'active') and not (requestScope.presentation eq 'registration')}">
-
-			<div align="right">
-				<form action="controller" method="post">
-					<input type="hidden" name="command" value="do_authorization" /> 
-					Enter login: <input type="text" name="login" value="" /><br /> 
-					Enter password: <input type="password" name="password" value="" /><br />
-
-					<c:if test="${not (requestScope.AuthenticationError eq null)}">
-						<font color="red"> 
-						   <c:out value="${requestScope.errorMessage}" />
-						</font> 
-					</c:if>
-						<a href="controller?command=go_to_registration_page">Registration</a>
+			<c:if
+				test="${not (sessionScope.userStatus eq 'active') and not (requestScope.presentation eq 'registration')}">
 				
-					<input type="submit" value="Sign In" /><br />
-				</form>
-			</div>
+					<form action="controller" method="post">
+						<input type="hidden" name="command" value="do_authorization" />
+						<fmt:message key="label.auth.enter_login" />
+						<input type="text" name="login" value="" /><br />
+						<fmt:message key="label.auth.enter_password" />
+						<input type="password" name="password" value="" /><br />
 
-		</c:if>
-		
-		<c:out value="${requestScope.message}"/>
-			<c:out value="${requestScope.errorMessage}"/>
-	
-		<c:if test="${sessionScope.userStatus eq 'active'}">
-		
-			<div align="right">
-			 <c:out value="You are online, ${userInfo.name}" />
-	
+						
+						<a href="controller?command=go_to_registration_page"><fmt:message
+								key="button.auth.registration" /></a> <input type="submit"
+							value="<fmt:message key="button.auth.sign_in"/>" /><br />
+					</form>
+						<font color="red"> 
+							<c:out value="${requestScope.message}" />
+							<c:out value="${requestScope.errorMessage}" />
+					</font>
+			</c:if>
+
+			
+			<c:if test="${sessionScope.userStatus eq 'active'}">
+
+				<p>
+					<fmt:message key="label.you_are_online" />
+					<a href="controller?command=go_to_user_profile"><c:out
+							value=" ${userInfo.name}" /></a>
+				</p>
 				<form action="controller" method="post">
-					<input type="hidden" name="command" value="do_sign_out" /> 
-					<input type="submit" value="Sign Out" /><br />
+					<input type="hidden" name="command" value="do_sign_out" /> <input
+						type="submit" value="<fmt:message key="button.auth.sign_out"/>" /><br />
 				</form>
-			</div>
 
-		</c:if>
+			</c:if>
+		</div>
 	</div>
 
 </div>

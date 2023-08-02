@@ -14,7 +14,7 @@
 				<div class="single-news-header-wrapper">
 					<div class="news-title">
 						<a href="controller?command=go_to_view_user&id=${user.id}"><c:out
-								value="${user.login} ${user} " /></a>
+								value="${user.login}" /></a>
 					</div>
 				</div>
 			</div>
