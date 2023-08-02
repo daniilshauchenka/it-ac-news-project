@@ -15,7 +15,12 @@
 
 </head>
 
-<body>
+<body>		
+	<ul>
+<c:forEach var="items" items="${requestScope}">
+<li>${items.key} -> ${items.value}</li>
+</c:forEach>
+</ul>
 
 </body>
 

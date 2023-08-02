@@ -25,6 +25,8 @@ public class RequestParam {
 	final static String JSP_NEWS_IMAGE_PATH_PARAM_NAME = "imagePath";
 	final static String JSP_NEWS_ID_PARAM_NAME = "id";
 	final static String JSP_USERS_LIST_PARAM_NAME = "usersList";
+	final static String JSP_CURRENT_PAGE_PARAM_NAME = "page";
+	final static String JSP_TOTAL_PAGES_PARAM_NAME = "totalPages";
 
 	public final static String URL_COOKIE_LOCALE_PARAM_NAME = "cookieLocale";
 	

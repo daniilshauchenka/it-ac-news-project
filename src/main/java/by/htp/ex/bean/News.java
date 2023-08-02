@@ -120,5 +120,64 @@ public class News implements Serializable {
 		this.author = author;
 	}	
 	
+	@Override
+	public boolean equals(Object o) {
+		if (this==o) {
+			return true;
+		}
+		if (o==null) {
+			return false;
+		}
+		if(getClass() != o.getClass()) {
+			return false;
+		}
+		News other = (News)o;
+		boolean idEquals = this.id == other.id;
+		boolean titleEquals = (this.title==null && other.title==null) 
+				|| (this.title !=null && this.title.equals(other.title));
+		boolean briefNewsEquals = (this.briefNews==null && other.briefNews==null) 
+				|| (this.briefNews !=null && this.briefNews.equals(other.briefNews));
+		boolean contentEquals = (this.content==null && other.content==null) 
+				|| (this.content !=null && this.content.equals(other.content));
+		boolean newsDateEquals = (this.newsDate==null && other.newsDate==null) 
+				|| (this.newsDate !=null && this.newsDate.equals(other.newsDate));
+		boolean imagePathEquals = (this.imagePath==null && other.imagePath==null) 
+				|| (this.imagePath !=null && this.imagePath.equals(other.imagePath));
+		boolean authorEquals = (this.author==null && other.author==null) 
+				|| (this.author !=null && this.author.equals(other.author));
+		
+		return idEquals && titleEquals && briefNewsEquals &&
+				contentEquals && newsDateEquals && imagePathEquals && authorEquals;
+		
+	}
+	
+	@Override
+	public final int hashCode() {
+	    int result = 17;
+	    Integer id = this.id;
+	    if (id != null) {
+	        result = 31 * result + id.hashCode();
+	    }
+	    if (title != null) {
+	        result = 31 * result + title.hashCode();
+	    }
+	    if (briefNews !=null) {
+	        result = 31 * result + briefNews.hashCode();
+	    }
+	    if (content !=null) {
+	        result = 31 * result + content.hashCode();
+	    }
+	    if (newsDate !=null) {
+	        result = 31 * result + newsDate.hashCode();
+	    }
+	    if (imagePath !=null) {
+	        result = 31 * result + imagePath.hashCode();
+	    }
+	    if (author !=null) {
+	        result = 31 * result + author.hashCode();
+	    }
+	    return result;
+	}
+	
 
 }

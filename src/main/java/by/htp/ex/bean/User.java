@@ -16,7 +16,7 @@ public class User {
 	private List<News> favoriteNewsList;
 	private List<News> viewedNewsList;
 // добавить статус? как это лушче делать, по аналогу с ролями или просто String statusName
-	private Locale locale;
+
 	private boolean isBanned;
 	
 	
@@ -160,19 +160,7 @@ public class User {
 		this.viewedNewsList = viewedNewsList;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", login=" + login + ", password=" + password + ", email=" + email + ", name=" + name
-				+ ", surname=" + surname + ", role=" + role + ", favoriteNewsList=" + favoriteNewsList + ", viewedNewsList=" + viewedNewsList + "]";
-	}
-
-	public Locale getLocale() {
-		return locale;
-	}
-
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
+	
 
 	public boolean isBanned() {
 		return isBanned;
@@ -181,5 +169,82 @@ public class User {
 	public void setBanned(boolean isBanned) {
 		this.isBanned = isBanned;
 	}
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", login=" + login + ", password=" + password + ", email=" + email + ", name=" + name
+				+ ", surname=" + surname + ", role=" + role + ", favoriteNewsList=" + favoriteNewsList + ", viewedNewsList=" + viewedNewsList + "]";
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this==o) {
+			return true;
+		}
+		if (o==null) {
+			return false;
+		}
+		if(getClass() != o.getClass()) {
+			return false;
+		}
+		User other = (User)o;
+		boolean idEquals = this.id == other.id;
+		boolean loginEquals = (this.login==null && other.login==null) 
+				|| (this.login !=null && this.login.equals(other.login));
+		boolean passwordEquals = (this.password==null && other.password==null) 
+				|| (this.password !=null && this.password.equals(other.password));
+		boolean emailEquals = (this.email==null && other.email==null) 
+				|| (this.email !=null && this.email.equals(other.email));
+		boolean nameEquals = (this.name==null && other.name==null) 
+				|| (this.name !=null && this.name.equals(other.name));
+		boolean surnameEquals = (this.surname==null && other.surname==null) 
+				|| (this.surname !=null && this.surname.equals(other.surname));
+		boolean roleEquals = (this.role==null && other.role==null) 
+				|| (this.role !=null && this.role.equals(other.role));
+		boolean favoriteNewsListEquals = (this.favoriteNewsList==null && other.favoriteNewsList==null) 
+				|| (this.favoriteNewsList !=null && this.favoriteNewsList.equals(other.favoriteNewsList));
+		boolean viewedNewsListEquals = (this.viewedNewsList==null && other.viewedNewsList==null) 
+				|| (this.viewedNewsList !=null && this.viewedNewsList.equals(other.viewedNewsList));
+		
+		return idEquals && loginEquals && passwordEquals &&
+				emailEquals && nameEquals && surnameEquals && roleEquals
+				&& favoriteNewsListEquals && viewedNewsListEquals;
+		
+	}
+	
+	@Override
+	public final int hashCode() {
+	    int result = 17;
+	    Integer id = this.id;
+	    if (id != null) {
+	        result = 31 * result + id.hashCode();
+	    }
+	    if (login != null) {
+	        result = 31 * result + login.hashCode();
+	    }
+	    if (password !=null) {
+	        result = 31 * result + password.hashCode();
+	    }
+	    if (email !=null) {
+	        result = 31 * result + email.hashCode();
+	    }
+	    if (name !=null) {
+	        result = 31 * result + name.hashCode();
+	    }
+	    if (surname !=null) {
+	        result = 31 * result + surname.hashCode();
+	    }
+	    if (role !=null) {
+	        result = 31 * result + role.hashCode();
+	    }
+	    if (favoriteNewsList !=null) {
+	        result = 31 * result + favoriteNewsList.hashCode();
+	    }
+	    if (viewedNewsList !=null) {
+	        result = 31 * result + viewedNewsList.hashCode();
+	    }
+	    return result;
+	}
+	
 }
 

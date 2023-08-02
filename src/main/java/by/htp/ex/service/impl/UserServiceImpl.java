@@ -20,12 +20,9 @@ public class UserServiceImpl implements IUserService {
 	public User authorization(String login, String password) throws ServiceException {
 
 		try {
-
 			User user = userDAO.authorization(login, password);
-
 			return user;
 		} catch (DaoException e) {
-
 			throw new ServiceException(e.getMessage());
 		}
 
@@ -34,36 +31,40 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public boolean registration(User user) throws ServiceException {
 		try {
-			
 			boolean result = userDAO.registration(user);
-			
 			return result;
 		} catch (DaoException e) {
 			throw new ServiceException(e.getMessage());
 		}
 	}
 
-
-
 	@Override
-	public List<User> getList(int start, int count) throws ServiceException {
+	public List<User> getList(int offset, int limit) throws ServiceException {
 		try {
-			//TODO
-			return userDAO.getList(0, 30);
-		} catch(DaoException e) {
+			return userDAO.getList(offset, limit);
+		} catch (DaoException e) {
 			throw new ServiceException(e.getMessage());
 		}
-		
+
 	}
 
 	@Override
 	public User getUserById(int id) throws ServiceException {
 		try {
 			return userDAO.getUserById(id);
-		}catch(DaoException e) {
+		} catch (DaoException e) {
 			throw new ServiceException(e.getMessage());
 		}
-	
+
+	}
+
+	@Override
+	public int getUsersQuantity() throws ServiceException {
+		try {
+			return userDAO.getUsersQuantity();
+		} catch (DaoException e) {
+			throw new ServiceException(e.getMessage());
+		}
 	}
 
 }

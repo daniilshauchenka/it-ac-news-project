@@ -19,23 +19,16 @@ public class NewsServiceImpl implements INewsService{
 	
 
 	@Override
-	public List<News> latestList(int count) throws ServiceException {
+	public List<News> getLatestList(int offset,int limit) throws ServiceException {
 		
 		try {
-			return newsDAO.getLatestList(5);
+			return newsDAO.getLatestList(offset, limit);
 		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
 	}
 
-	@Override
-	public List<News> list() throws ServiceException {
-		try {
-			return newsDAO.getLatestList(5);
-		} catch (DaoException e) {
-			throw new ServiceException(e);
-		}
-	}
+
 
 	@Override
 	public News findById(int id) throws ServiceException {
@@ -77,6 +70,18 @@ public class NewsServiceImpl implements INewsService{
 			throw new ServiceException(e);
 		}
 		
+	}
+
+
+
+	@Override
+	public int getNewsQuantity() throws ServiceException {
+		
+		try {
+			return newsDAO.getNewsQuantity();
+		} catch (DaoException e) {
+			throw new ServiceException(e);
+		}
 	}
 
 }

@@ -26,15 +26,17 @@ public class NewsDAO implements INewsDAO {
 			+ "news.image_path as image_path, users.id as author_id, users_info.name as author_name, users_info.surname as author_surname, "
 			+ "users.login as author_login from news left join users on news.author_id = users.id left join "
 			+ "users_info on users.id=users_info.users_id where news.is_deleted = 0 ORDER BY news.date_created "
-			+ "DESC LIMIT ?";
+			+ "DESC LIMIT ? OFFSET ?";
 
 	@Override
-	public List<News> getLatestList(int count) throws DaoException {
+	public List<News> getLatestList(int offset, int limit) throws DaoException {
 		List<News> result = new ArrayList<News>();
 
 		try (Connection connection = connectionPool.takeConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_LASTEST_NEWS)){
-			preparedStatement.setInt(1, count);
+			preparedStatement.setInt(1, limit);
+			preparedStatement.setInt(2, offset);
+			
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()){
 				result.add(getFullNewsFromResultSet(resultSet));
@@ -46,8 +48,6 @@ public class NewsDAO implements INewsDAO {
 		return result;
 	}
 	
-
-
 	
 	private News getFullNewsFromResultSet(ResultSet resultSet) throws SQLException, DaoException {
 		News news = new News();
@@ -84,8 +84,6 @@ public class NewsDAO implements INewsDAO {
 //		return news;
 //	}
 	
-	
-//	private final static String SQL_GET_SINGLE_NEWS = "SELECT * FROM news WHERE id = ?";
 	
 	private final static String SQL_GET_SINGLE_NEWS = "SELECT news.id as id, news.is_deleted as is_deleted, "
 			+ "news.title as title, news.brief as brief, news.content as content, news.date_created as date_created, "
@@ -276,6 +274,25 @@ public class NewsDAO implements INewsDAO {
 	public void recoverMultipleNews(int[] id) throws DaoException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	private final static String SQL_GET_NEWS_QUANTITY = "SELECT COUNT(*) FROM news WHERE is_deleted=0";
+
+	@Override
+	public int getNewsQuantity() throws DaoException {
+		int quantity = -1;
+		try (Connection connection = connectionPool.takeConnection();
+				PreparedStatement statement = connection.prepareStatement(SQL_GET_NEWS_QUANTITY)) {
+
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				quantity = resultSet.getInt(1);
+			}
+		} catch (SQLException | ConnectionPoolException e) {
+			throw new DaoException(e);
+		}
+		return quantity;
 	}
 
 }

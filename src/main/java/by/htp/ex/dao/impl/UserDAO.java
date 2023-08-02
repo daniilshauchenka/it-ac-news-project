@@ -22,16 +22,7 @@ public class UserDAO implements IUserDAO {
 
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 	private final static UserDataValidation validator = ValidationProvider.getInstance().getUserValidator();
-	private final static String ru_PARAM = "ru";
-	private final static String RU_PARAM = "RU";
-	private final static String en_PARAM = "en";
-	private final static String US_PARAM = "US";
-	private final static String USER_INFO_RU_PARAM = "users_info_ru";
-	private final static String USER_INFO_EN_PARAM = "users_info_en";
 
-	// private final static String SQL_TO_AUTH_USER = "SELECT * FROM users WHERE
-	// login = ?";
-//	private final static String SQL_TO_AUTH_USER = "select * from users left join users_has_roles on users.id = users_has_roles.users_id where login = ?";
 	private final static String SQL_TO_AUTH_USER = "select users.id, login, password, email, users_info.name, users_info.surname, roles.name as role from users left join users_has_roles on users.id = users_has_roles.users_id left "
 			+ "join roles on users_has_roles.roles_id = roles.id left join users_info on users.id=users_info.users_id where login = ?";
 
@@ -58,7 +49,7 @@ public class UserDAO implements IUserDAO {
 			}
 
 			User user = getUserFromResultSet(resultSet);
-		
+
 			return user;
 		} catch (SQLException e) {
 			throw new DaoException("Error with SQL", e);
@@ -84,24 +75,16 @@ public class UserDAO implements IUserDAO {
 		return user;
 	}
 
-	public User getUserCredentials(User user) {
-		return user;
-
-	}
-
 	private final static String SQL_ADDING_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
-	private final static String SQL_ADDING_LOCALE = "INSERT INTO locales (users_id, language, country) VALUES (?,?,?)";
-	private final static String SQL_ADDING_USER_INFO = "INSERT INTO users_info (users_id, name, surname) VALUES (?,?,?)";
+		private final static String SQL_ADDING_USER_INFO = "INSERT INTO users_info (users_id, name, surname) VALUES (?,?,?)";
 	private final static String SQL_ADDING_USER_ROLE = "insert into users_has_roles (users_id, roles_id) values (?, (select id from roles where roles.name = ?))";
 	private final static String USER_DEFAULT_ROLE = "USER";
 
 	@Override
 	public boolean registration(User user) throws DaoException {
-		// ln(user);
 		boolean result = false;
 		Connection connection = null;
 		PreparedStatement preparedStatementAddingUser = null;
-		// PreparedStatement preparedStatementAddingLocale = null;
 		PreparedStatement preparedStatementAddingUserInfo = null;
 		PreparedStatement preparedStatementAddingUserRole = null;
 		try {
@@ -109,9 +92,7 @@ public class UserDAO implements IUserDAO {
 			connection.setAutoCommit(false);
 			if (userExists(user, connection)) {
 				throw new DaoException("User exists!!!");
-
 			}
-
 			preparedStatementAddingUser = connection.prepareStatement(SQL_ADDING_USER, Statement.RETURN_GENERATED_KEYS);
 			preparedStatementAddingUser.setString(1, user.getLogin());
 			preparedStatementAddingUser.setString(2, user.getPassword());
@@ -133,9 +114,7 @@ public class UserDAO implements IUserDAO {
 			preparedStatementAddingUserInfo.setInt(1, user.getId());
 			preparedStatementAddingUserInfo.setString(2, user.getName());
 			preparedStatementAddingUserInfo.setString(3, user.getSurname());
-
 			preparedStatementAddingUserInfo.executeUpdate();
-
 			connection.setAutoCommit(true);
 			return true;
 		} catch (ConnectionPoolException | SQLException | DaoException e) {
@@ -154,10 +133,8 @@ public class UserDAO implements IUserDAO {
 		} finally {
 			try {
 				connectionPool.closeConnection(connection, preparedStatementAddingUser);
-				// connectionPool.closeConnection(preparedStatementAddLocal);
 				connectionPool.closeConnection(preparedStatementAddingUserInfo);
 				connectionPool.closeConnection(preparedStatementAddingUserRole);
-				// ln("connections closed");
 			} catch (ConnectionPoolException e) {
 				throw new DaoException(e);
 			}
@@ -170,14 +147,9 @@ public class UserDAO implements IUserDAO {
 	private boolean userExists(User user, Connection connection) throws SQLException {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_CHECK_USER_EXIST);
-			// ln("checking if user exists");
-
 			preparedStatement.setString(1, user.getEmail());
 			preparedStatement.setString(2, user.getLogin());
-			// preparedStatement.setInt(3, user.getId());
 			ResultSet resultSet = preparedStatement.executeQuery();
-			// ln("checked");
-
 			return resultSet.next();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -185,18 +157,18 @@ public class UserDAO implements IUserDAO {
 		return false;
 	}
 
-	private final static String SQL_TO_AUTH_USER123 = "select users.id, login, password, email, users_info.name, users_info.surname, roles.name as role from users left join users_has_roles on users.id = users_has_roles.users_id left "
-			+ "join roles on users_has_roles.roles_id = roles.id left join users_info on users.id=users_info.users_id where login = ?";
-
 	private final static String SQL_GET_USER_LIST = "SELECT users.id as id, login,  email, users_info.name, users_info.surname, roles.name as role FROM users "
-			+ "left join users_has_roles on users.id = users_has_roles.users_id left join roles on users_has_roles.roles_id = roles.id left join users_info on users.id=users_info.users_id ORDER BY id ASC LIMIT ?";
+			+ "left join users_has_roles on users.id = users_has_roles.users_id left join roles on users_has_roles.roles_id = roles.id left join users_info on users.id=users_info.users_id ORDER BY id ASC  LIMIT ? OFFSET ? ";
 
 	@Override
-	public List<User> getList(int start, int count) throws DaoException {
+	public List<User> getList(int offset, int limit) throws DaoException {
 		List<User> result = new ArrayList<User>();
 		try (Connection connection = connectionPool.takeConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_USER_LIST)) {
-			preparedStatement.setInt(1, count);
+			preparedStatement.setInt(1, limit);
+			preparedStatement.setInt(2, offset);
+			
+			
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 
@@ -208,6 +180,7 @@ public class UserDAO implements IUserDAO {
 			return result;
 
 		} catch (SQLException | ConnectionPoolException e) {
+			e.printStackTrace();
 			throw new DaoException(e);
 		}
 
@@ -215,8 +188,6 @@ public class UserDAO implements IUserDAO {
 
 	private final static String SQL_GET_SINGLE_USER = "select login, email, users_info.name as name, users_info.surname as surname, roles.name as role from users left join users_has_roles on users.id = users_has_roles.users_id left "
 			+ "join roles on users_has_roles.roles_id = roles.id left join users_info on users.id=users_info.users_id where users.id = ?";
-
-//	private final static String SQL_GET_SINGLE_USER = "SELECT * FROM users WHERE id = ?";
 
 	@Override
 	public User getUserById(int id) throws DaoException {
@@ -238,5 +209,24 @@ public class UserDAO implements IUserDAO {
 		} catch (SQLException | ConnectionPoolException e) {
 			throw new DaoException(e);
 		}
+	}
+
+	private final static String SQL_GET_USERS_QUANTITY = "SELECT COUNT(*) FROM users";
+
+	@Override
+	public int getUsersQuantity() throws DaoException {
+		int quantity = -1;
+		try (Connection connection = connectionPool.takeConnection();
+				PreparedStatement statement = connection.prepareStatement(SQL_GET_USERS_QUANTITY)) {
+
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				quantity = resultSet.getInt(1);
+			}
+		} catch (SQLException | ConnectionPoolException e) {
+			throw new DaoException(e);
+		}
+		return quantity;
 	}
 }

@@ -11,5 +11,5 @@ public interface IUserService {
 	User authorization(String login, String password) throws ServiceException;
 	boolean registration(User user) throws ServiceException;
 	User getUserById(int id) throws ServiceException;
-
+	int getUsersQuantity() throws ServiceException;
 }

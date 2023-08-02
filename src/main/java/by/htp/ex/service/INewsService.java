@@ -7,10 +7,11 @@ import by.htp.ex.exception.ServiceException;
 
 public interface INewsService {
  
-  List<News> latestList(int count)  throws ServiceException;
-  List<News> list()  throws ServiceException;
+  List<News> getLatestList(int offset,int limit)  throws ServiceException;
   News findById(int id) throws ServiceException;
   void add(News news) throws ServiceException;
   void delete(int id) throws ServiceException;
   void update(int id, News news) throws ServiceException;
+  int getNewsQuantity() throws ServiceException;
 }
+

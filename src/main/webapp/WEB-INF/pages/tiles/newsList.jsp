@@ -51,7 +51,21 @@
 	</c:forEach>
 
 
-
+	
+	<table border="1">
+        <tr>
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <c:choose>
+                    <c:when test="${currentPage eq i}">
+                        <td>${i}</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td><a href="controller?command=go_to_news_list&page=${i}">${i}</a></td>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </tr>
+    </table>
 
 
 	<div class="no-news">

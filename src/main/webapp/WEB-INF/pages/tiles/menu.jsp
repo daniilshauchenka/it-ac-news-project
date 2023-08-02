@@ -39,7 +39,7 @@
 					</li>
 					<li style="padding-left: 15px;">
 						
-						<a href="controller?command=go_to_users_list"><fmt:message key="label.menu.users_list"/></a> <br />
+						<a href="controller?command=go_to_users_list&page=1"><fmt:message key="label.menu.users_list"/></a> <br />
 					</li>
 				</c:if>
 	

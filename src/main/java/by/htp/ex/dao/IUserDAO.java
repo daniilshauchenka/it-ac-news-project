@@ -9,6 +9,8 @@ public interface IUserDAO {
 	
 	User authorization(String login, String password) throws DaoException;
 	boolean registration(User user) throws DaoException;
-	List<User> getList(int start, int count) throws DaoException;
+	List<User> getList(int offset, int limit) throws DaoException;
 	User getUserById(int id) throws DaoException;
+	int getUsersQuantity() throws DaoException;
+	
 }
