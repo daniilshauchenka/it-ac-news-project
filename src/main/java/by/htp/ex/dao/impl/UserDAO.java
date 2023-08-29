@@ -7,14 +7,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import by.htp.ex.bean.News;
 import by.htp.ex.bean.Role;
 import by.htp.ex.bean.User;
 import by.htp.ex.dao.IUserDAO;
+import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
-import by.htp.ex.exception.DaoException;
 import by.htp.ex.util.validation.UserDataValidation;
 import by.htp.ex.util.validation.ValidationProvider;
 
@@ -37,24 +35,24 @@ public class UserDAO implements IUserDAO {
 			try {
 				resultSet = preparedStatement.executeQuery();
 			} catch (SQLException ex) {
-				ex.printStackTrace();
+				throw new DaoException("error.sql_problem", ex);
 			}
 
 			if (!resultSet.next()) {
-				throw new DaoException("User doesn't exist");
+				throw new DaoException("error.user_not_found");
 			}
 
 			if (!validator.isCorrectPassword(password, resultSet.getString("password"))) {
-				throw new DaoException("Incorrect password!");
+				throw new DaoException("error.incorrect_password");
 			}
 
 			User user = getUserFromResultSet(resultSet);
 
 			return user;
 		} catch (SQLException e) {
-			throw new DaoException("Error with SQL", e);
+			throw new DaoException("error.sql_problem", e);
 		} catch (ConnectionPoolException e) {
-			throw new DaoException("Error with Connection Pool", e);
+			throw new DaoException("error.connection_pool_problem", e);
 		}
 	}
 
@@ -70,19 +68,18 @@ public class UserDAO implements IUserDAO {
 		String role = resultSet.getString("role");
 		user.setRole(Role.valueOf(role.toUpperCase()));
 		if (user.getRole() == null) {
-			throw new DaoException("Users role not found!");
+			throw new DaoException("error.user_role_not_found");
 		}
 		return user;
 	}
 
 	private final static String SQL_ADDING_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
-		private final static String SQL_ADDING_USER_INFO = "INSERT INTO users_info (users_id, name, surname) VALUES (?,?,?)";
+	private final static String SQL_ADDING_USER_INFO = "INSERT INTO users_info (users_id, name, surname) VALUES (?,?,?)";
 	private final static String SQL_ADDING_USER_ROLE = "insert into users_has_roles (users_id, roles_id) values (?, (select id from roles where roles.name = ?))";
 	private final static String USER_DEFAULT_ROLE = "USER";
 
 	@Override
 	public boolean registration(User user) throws DaoException {
-		boolean result = false;
 		Connection connection = null;
 		PreparedStatement preparedStatementAddingUser = null;
 		PreparedStatement preparedStatementAddingUserInfo = null;
@@ -91,7 +88,7 @@ public class UserDAO implements IUserDAO {
 			connection = connectionPool.takeConnection();
 			connection.setAutoCommit(false);
 			if (userExists(user, connection)) {
-				throw new DaoException("User exists!!!");
+				throw new DaoException("error.user_exists");
 			}
 			preparedStatementAddingUser = connection.prepareStatement(SQL_ADDING_USER, Statement.RETURN_GENERATED_KEYS);
 			preparedStatementAddingUser.setString(1, user.getLogin());
@@ -152,7 +149,6 @@ public class UserDAO implements IUserDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			return resultSet.next();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 		}
 		return false;
 	}
@@ -167,20 +163,16 @@ public class UserDAO implements IUserDAO {
 				PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_USER_LIST)) {
 			preparedStatement.setInt(1, limit);
 			preparedStatement.setInt(2, offset);
-			
-			
+
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 
 				User user = new User(resultSet.getInt("id"), resultSet.getString("login"),
 						Role.valueOf(resultSet.getString("role")));
 				result.add(user);
-
 			}
 			return result;
-
 		} catch (SQLException | ConnectionPoolException e) {
-			e.printStackTrace();
 			throw new DaoException(e);
 		}
 
@@ -204,6 +196,9 @@ public class UserDAO implements IUserDAO {
 				String email = resultSet.getString("email");
 				Role role = Role.valueOf(resultSet.getString("role"));
 				user = new User(id, login, email, name, surname, role);
+			}
+			if (user==null) {
+				throw new DaoException("error.user_not_found");
 			}
 			return user;
 		} catch (SQLException | ConnectionPoolException e) {

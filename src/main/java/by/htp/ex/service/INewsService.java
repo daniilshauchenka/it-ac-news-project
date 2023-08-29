@@ -3,7 +3,7 @@ package by.htp.ex.service;
 import java.util.List;
 
 import by.htp.ex.bean.News;
-import by.htp.ex.exception.ServiceException;
+import by.htp.ex.service.exception.ServiceException;
 
 public interface INewsService {
  
@@ -13,5 +13,7 @@ public interface INewsService {
   void delete(int id) throws ServiceException;
   void update(int id, News news) throws ServiceException;
   int getNewsQuantity() throws ServiceException;
+  List<News> getDeletedList(int offset,int limit)  throws ServiceException;
+  
 }
 

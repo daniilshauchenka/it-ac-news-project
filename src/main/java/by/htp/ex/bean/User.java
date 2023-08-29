@@ -1,7 +1,6 @@
 package by.htp.ex.bean;
 
 import java.util.List;
-import java.util.Locale;
 
 public class User {
 	

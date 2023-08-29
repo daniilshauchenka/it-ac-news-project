@@ -3,15 +3,11 @@ package by.htp.ex.service.impl;
 import java.util.List;
 
 import by.htp.ex.bean.News;
-import by.htp.ex.bean.User;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.INewsDAO;
-import by.htp.ex.exception.DaoException;
-import by.htp.ex.exception.NewsDAOException;
-import by.htp.ex.exception.ServiceException;
+import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.service.INewsService;
-import by.htp.ex.service.IUserService;
-import by.htp.ex.service.ServiceProvider;
+import by.htp.ex.service.exception.ServiceException;
 
 public class NewsServiceImpl implements INewsService{
 
@@ -28,6 +24,15 @@ public class NewsServiceImpl implements INewsService{
 		}
 	}
 
+	@Override
+	public List<News> getDeletedList(int offset,int limit) throws ServiceException {
+		
+		try {
+			return newsDAO.getDeletedList(offset, limit);
+		} catch (DaoException e) {
+			throw new ServiceException(e);
+		}
+	}
 
 
 	@Override

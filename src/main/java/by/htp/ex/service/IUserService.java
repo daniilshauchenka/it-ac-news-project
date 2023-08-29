@@ -2,9 +2,8 @@ package by.htp.ex.service;
 
 import java.util.List;
 
-import by.htp.ex.bean.News;
 import by.htp.ex.bean.User;
-import by.htp.ex.exception.ServiceException;
+import by.htp.ex.service.exception.ServiceException;
 
 public interface IUserService {
 	List<User> getList(int start, int count)  throws ServiceException;

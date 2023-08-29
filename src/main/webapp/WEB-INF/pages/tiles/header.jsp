@@ -57,8 +57,8 @@
 							value="<fmt:message key="button.auth.sign_in"/>" /><br />
 					</form>
 						<font color="red"> 
-							<c:out value="${requestScope.message}" />
-							<c:out value="${requestScope.errorMessage}" />
+							
+							<c:out value="${requestScope.authErrorMessage}" />
 					</font>
 			</c:if>
 

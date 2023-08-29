@@ -1,27 +1,23 @@
 package by.htp.ex.controller.impl;
 
 import java.io.IOException;
-import java.util.List;
 
 import by.htp.ex.bean.News;
-import by.htp.ex.bean.User;
 import by.htp.ex.controller.Command;
-import by.htp.ex.exception.ServiceException;
 import by.htp.ex.service.INewsService;
-import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
+import by.htp.ex.service.exception.ServiceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class GoToEditNews implements Command {
+public final class GoToEditNews implements Command {
 	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		News news;
 		String id = request.getParameter("id");
-	System.out.println("id "+id);
 		try {
 			news = newsService.findById(Integer.parseInt(id));
 			request.setAttribute(RequestParam.JSP_SINGLE_NEWS_PARAM_NAME, news);
@@ -32,18 +28,9 @@ public class GoToEditNews implements Command {
 			request.setAttribute(RequestParam.JSP_ACTION_PARAM_NAME, RequestParam.EDIT_ACTION);
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			request.setAttribute(RequestParam.JSP_ERROR_PARAM_NAME, e.getCause().getMessage());
+			request.setAttribute(RequestParam.JSP_PRESENTATION_PARAM_NAME, RequestParam.ERROR_PAGE);
+			request.getRequestDispatcher("controller?command=go_to_error_page").forward(request, response);
 		}
-
-//		try {
-//			//int userId = Integer.parseInt(request.getSession(true).getAttribute("userId").toString());
-//			//user = userService.getUserById(userId);
-//			
-//		}catch (ServiceException e) {
-//			
-//		}
-
 	}
-
 }

@@ -21,6 +21,13 @@
 		<url-pattern>/controller</url-pattern>
 	</servlet-mapping>
 
+	<listener>
+		<listener-class>by.htp.ex.controller.listener.SessionListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>by.htp.ex.controller.listener.ContextListener</listener-class>
+	</listener>
 
 
 	

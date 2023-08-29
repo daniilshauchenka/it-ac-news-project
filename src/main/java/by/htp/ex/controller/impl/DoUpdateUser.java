@@ -1,35 +1,23 @@
 package by.htp.ex.controller.impl;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
 import by.htp.ex.bean.User;
 import by.htp.ex.controller.Command;
-import by.htp.ex.exception.ServiceException;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.IUserService;
-import by.htp.ex.service.impl.UserServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import by.htp.ex.util.validation.UserDataValidation;
-import by.htp.ex.util.validation.ValidationProvider;
-public class DoUpdateUser implements Command {
+
+public final class DoUpdateUser implements Command {
 
 	private final IUserService service = ServiceProvider.getInstance().getUserService();
 
-	
-	
-
-	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		User user = (User)request.getSession().getAttribute("userInfo");
-		
+		User user = (User) request.getSession().getAttribute("userInfo");
 		System.out.println("upd user" + user);
-		
-		
 //	
 //		String login = request.getParameter(RequestParam.JSP_LOGIN_PARAM_NAME);
 //		String password = request.getParameter(RequestParam.JSP_PASSWORD_PARAM_NAME);
@@ -61,8 +49,5 @@ public class DoUpdateUser implements Command {
 //			// go-to error page
 //
 //		}
-
-	
 	}
-
 }

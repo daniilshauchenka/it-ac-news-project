@@ -18,12 +18,7 @@ public final class ConnectionPool {
 	private BlockingQueue<Connection> queueTakenConnection;
 
 	private ConnectionPool() {
-		DBResourceManager resources = DBResourceManager.getInstance();
-//		this.driver = resources.getValue(DBParameters.DB_DRIVER);
-//		this.url = resources.getValue(DBParameters.DB_URL);
-//		this.user = resources.getValue(DBParameters.DB_USER);
-//		this.password = resources.getValue(DBParameters.DB_PASSWORD);
-//		
+
 		this.driver = DBParameters.DB_DRIVER;
 		this.url = DBParameters.DB_URL;
 		this.user = DBParameters.DB_USER;
@@ -49,6 +44,7 @@ public final class ConnectionPool {
 				PooledConnection pooledConnection = new PooledConnection(connection);
 				queueAvailableConnection.add(pooledConnection);
 			}
+			
 		}
 		catch (ClassNotFoundException e) {
 			throw new ConnectionPoolException("Class driver can`t found", e);

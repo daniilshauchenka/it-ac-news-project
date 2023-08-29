@@ -21,9 +21,10 @@
 <title>Error</title>
 </head>
 <body>
-<h1>Технические шоколадки. Приносим свои извинения.</h1>
-<c:out value="${message }"></c:out>
-<c:out value="${errorMessage }"></c:out>
+<h1><fmt:message key="${label.errorHeader } }"/></h1>
+<fmt:message key="${message }"/>
+<fmt:message key="${errorMessage }"/>
+
 
 <a href="controller?command=go_to_base_page"><fmt:message key="label.error.go_to_base_page"/></a>
 

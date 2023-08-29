@@ -45,7 +45,7 @@ public class CommandProvider {
 			}
 		} catch(IllegalArgumentException e) {
 		//ignore
-			//log?
+
 		}		
 		return commands.get(commandName);
 	}

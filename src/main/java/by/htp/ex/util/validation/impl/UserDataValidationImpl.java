@@ -1,11 +1,9 @@
 package by.htp.ex.util.validation.impl;
 
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 
 import org.mindrot.jbcrypt.BCrypt;
-import by.htp.ex.bean.User;
-import by.htp.ex.exception.*;
 import by.htp.ex.util.validation.UserDataValidation;
 
 public class UserDataValidationImpl implements UserDataValidation {

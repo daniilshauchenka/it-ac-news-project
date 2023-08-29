@@ -5,16 +5,13 @@ import java.util.List;
 import by.htp.ex.bean.User;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.IUserDAO;
-import by.htp.ex.exception.DaoException;
-import by.htp.ex.exception.ServiceException;
+import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.service.IUserService;
-import by.htp.ex.util.validation.UserDataValidation;
-import by.htp.ex.util.validation.ValidationProvider;
+import by.htp.ex.service.exception.ServiceException;
 
 public class UserServiceImpl implements IUserService {
 
 	private final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
-	private final UserDataValidation userDataValidation = ValidationProvider.getInstance().getUserValidator();
 
 	@Override
 	public User authorization(String login, String password) throws ServiceException {
@@ -23,7 +20,7 @@ public class UserServiceImpl implements IUserService {
 			User user = userDAO.authorization(login, password);
 			return user;
 		} catch (DaoException e) {
-			throw new ServiceException(e.getMessage());
+			throw new ServiceException(e);
 		}
 
 	}
@@ -34,7 +31,7 @@ public class UserServiceImpl implements IUserService {
 			boolean result = userDAO.registration(user);
 			return result;
 		} catch (DaoException e) {
-			throw new ServiceException(e.getMessage());
+			throw new ServiceException(e);
 		}
 	}
 
@@ -43,7 +40,7 @@ public class UserServiceImpl implements IUserService {
 		try {
 			return userDAO.getList(offset, limit);
 		} catch (DaoException e) {
-			throw new ServiceException(e.getMessage());
+			throw new ServiceException(e);
 		}
 
 	}
@@ -53,7 +50,7 @@ public class UserServiceImpl implements IUserService {
 		try {
 			return userDAO.getUserById(id);
 		} catch (DaoException e) {
-			throw new ServiceException(e.getMessage());
+			throw new ServiceException(e);
 		}
 
 	}
@@ -63,7 +60,7 @@ public class UserServiceImpl implements IUserService {
 		try {
 			return userDAO.getUsersQuantity();
 		} catch (DaoException e) {
-			throw new ServiceException(e.getMessage());
+			throw new ServiceException(e);
 		}
 	}
 

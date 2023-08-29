@@ -1,6 +1,5 @@
 package by.htp.ex.util.validation;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface UserDataValidation {
